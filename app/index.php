@@ -1,4 +1,37 @@
 
+<?php
+//  Connectie naar database
+
+$host = 'db';
+$db = 'mydatabase';
+$user = 'user';
+$password = 'password';
+$charset = 'utf8mb4';
+
+//  pdo opties
+$opties = [
+  PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+  PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+  PDO::ATTR_EMULATE_PREPARES => false,
+];
+
+//  dsn
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+
+try {
+  //  Create the connection
+  $pdo = new PDO($dsn, $user, $password, $opties);
+  //  Succes melding
+  echo "Database connectie gelukt <br/>";
+} catch (PDOException $e) {
+  //  Foutmelding
+  echo $e->getMessage();
+  //  Stop (die)
+  die("Sorry. database probleem");
+}
+
+?>
+
 <!DOCTYPE html>
 <head>
   <meta charset="UTF-8" />
@@ -460,7 +493,168 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="js/script.js"></script>
+
+
+  <script>
+    const cart = {};
+
+    function openModal() {
+        document.getElementById('modalOverlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => document.getElementById('emailInput').focus(), 300);
+    }
+
+    function closeModal(e) {
+        if (e && e.target !== document.getElementById('modalOverlay')) return;
+        document.getElementById('modalOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    function togglePassword() {
+        const input = document.getElementById('passwordInput');
+        const icon = document.getElementById('eyeIcon');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>';
+        } else {
+            input.type = 'password';
+            icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+        }
+    }
+
+    function handleLogin(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        btn.textContent = 'Laden...';
+        btn.classList.add('loading');
+        setTimeout(() => {
+            btn.textContent = 'Inloggen';
+            btn.classList.remove('loading');
+            document.getElementById('modalOverlay').classList.remove('open');
+            document.body.style.overflow = '';
+            showToast('✅ Welkom terug!');
+        }, 1200);
+    }
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') { document.getElementById('modalOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+    });
+
+
+
+    function fmt(n) {
+        return '€\u00A0' + n.toFixed(2).replace('.', ',');
+    }
+
+    function updateCart() {
+        const itemsEl = document.getElementById('cartItems');
+        const emptyEl = document.getElementById('emptyCart');
+        const footerEl = document.getElementById('cartFooter');
+        const countEl = document.getElementById('cartCount');
+        const totalEl = document.getElementById('cartTotal');
+        const subEl = document.getElementById('subtotal');
+
+        document.querySelectorAll('.cart-item').forEach(el => el.remove());
+
+        const keys = Object.keys(cart).filter(k => cart[k].qty > 0);
+
+        if (!keys.length) {
+            emptyEl.style.display = 'flex';
+            footerEl.style.display = 'none';
+            countEl.textContent = '0 items';
+            return;
+        }
+
+        emptyEl.style.display = 'none';
+        footerEl.style.display = 'block';
+
+        let sub = 0, total = 0;
+        keys.forEach(k => {
+            const it = cart[k];
+            sub += it.price * it.qty;
+            total += it.qty;
+            const div = document.createElement('div');
+            div.className = 'cart-item';
+            div.innerHTML = `
+            <div class="cart-item-icon">${it.emoji}</div>
+            <div class="cart-item-info">
+              <p class="cart-item-name">${it.name}</p>
+              <p class="cart-item-price">${fmt(it.price)}</p>
+            </div>
+            <div class="qty-control">
+              <button class="qty-btn" onclick="changeQty('${k}',-1)" aria-label="Minder">&#8722;</button>
+              <span class="qty-num">${it.qty}</span>
+              <button class="qty-btn" onclick="changeQty('${k}',1)" aria-label="Meer">+</button>
+            </div>`;
+            itemsEl.appendChild(div);
+        });
+
+        countEl.textContent = total + (total === 1 ? ' item' : ' items');
+        subEl.textContent = fmt(sub);
+        totalEl.textContent = fmt(sub + 0.5);
+    }
+
+    function addToCart(name, price, emoji) {
+        if (!cart[name]) cart[name] = { name, price: parseFloat(price), emoji, qty: 0 };
+        cart[name].qty++;
+        updateCart();
+        showToast(emoji + '  ' + name + ' toegevoegd!');
+    }
+
+    function changeQty(key, d) {
+        if (cart[key]) { cart[key].qty = Math.max(0, cart[key].qty + d); updateCart(); }
+    }
+
+    function checkout() {
+        showToast('✅ Bestelling geplaatst! Smakelijk!');
+        Object.keys(cart).forEach(k => delete cart[k]);
+        setTimeout(updateCart, 200);
+    }
+
+    let toastT;
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        clearTimeout(toastT);
+        toastT = setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    document.querySelectorAll('.add-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const card = btn.closest('.product-card');
+            addToCart(card.dataset.name, card.dataset.price, card.dataset.emoji);
+            btn.textContent = '✓';
+            btn.style.background = 'var(--green-mid)';
+            setTimeout(() => { btn.textContent = '+'; btn.style.background = ''; }, 700);
+        });
+    });
+
+    document.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const cat = btn.dataset.cat;
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+            });
+            document.querySelectorAll('.category-block').forEach(block => {
+                block.style.display = block.querySelectorAll('.product-card:not([style*="none"])').length ? '' : 'none';
+            });
+        });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', e => {
+        const q = e.target.value.toLowerCase();
+        document.querySelectorAll('.product-card').forEach(card => {
+            const match = (card.dataset.name + card.querySelector('.product-desc').textContent).toLowerCase().includes(q);
+            card.style.display = match ? '' : 'none';
+        });
+        document.querySelectorAll('.category-block').forEach(block => {
+            block.style.display = block.querySelectorAll('.product-card:not([style*="none"])').length ? '' : 'none';
+        });
+    });
+  </script>
 </body>
 
 </html>
