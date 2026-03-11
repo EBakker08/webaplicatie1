@@ -30,6 +30,21 @@ try {
   die("Sorry. database probleem");
 }
 
+//  Define SQL statement
+$sql = "SELECT * FROM studenten WHERE leeftijd > 16";
+
+//  Prepare SQL statement
+$statement = $pdo->prepare($sql);
+
+//  Exacute SQL statement
+$statement->execute();
+
+$studenten = $statement->fetchAll();
+
+echo "<pre>";
+print_r($studenten);
+echo "</pre>";
+
 ?>
 
 <!DOCTYPE html>
