@@ -1,5 +1,6 @@
-
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -7,12 +8,19 @@
 
 :root {
   --charcoal: #313534;
+  /* Donker grijs-groen: hoofdtekst en achtergronden */
   --green-deep: #5A8632;
+  /* Donkergroen: hover-states en links               */
   --green-mid: #89B83D;
+  /* Middengroen: focus-randen en bevestigingskleuren */
   --orange: #FF571F;
+  /* Oranje: call-to-action knoppen en accenten        */
   --cream: #FFFCF7;
+  /* Crème wit: pagina-achtergrond                     */
   --cream-dark: #F2EDE4;
+  /* Iets donkerder crème: randen en velden            */
   --text-muted: #7A8078;
+  /* Gedempte grijsgroene kleur: beschrijvingsteksten  */
 }
 
 html {
@@ -20,6 +28,7 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Basisstijl voor de hele pagina */
 body {
   font-family: 'Noto Sans', sans-serif;
   background: var(--cream);
@@ -27,11 +36,21 @@ body {
   min-height: 100vh;
 }
 
-.login-btn {
+.hero-actions {
   position: absolute;
   top: 20px;
   right: 28px;
   z-index: 3;
+  /* Boven de hero-achtergrond maar onder de modal */
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  animation: fadeUp .5s .4s ease both;
+  /* Komt iets later binnen dan het logo */
+}
+
+/* Gedeelde basisstijl voor beide header-knoppen (pill-vorm) */
+.hero-btn {
   padding: 9px 22px;
   border: 1.5px solid rgba(255, 252, 247, 0.3);
   border-radius: 99px;
@@ -43,26 +62,39 @@ body {
   letter-spacing: 0.5px;
   cursor: pointer;
   transition: background .2s, border-color .2s, color .2s;
-  animation: fadeUp .5s .4s ease both;
 }
 
-.login-btn:hover {
+/* Login/Uitloggen knop hover: oranje */
+.hero-btn:hover {
   background: var(--orange);
   border-color: var(--orange);
-  color: var(--cream);
 }
 
-/* HERO */
+/* Admin-knop krijgt groene kleur als je ingelogd bent als admin */
+.hero-btn.is-admin {
+  background: var(--green-deep);
+  border-color: var(--green-deep);
+}
+
+.hero-btn.is-admin:hover {
+  background: #4a7028;
+  border-color: #4a7028;
+}
+
+/* ── HERO SECTIE ──────────────────────────────────────────
+       De grote donkere banner bovenaan met logo erin */
 .hero {
   position: relative;
   height: 260px;
   background: var(--charcoal);
   overflow: hidden;
+  /* Zorgt dat de diagonale ::before/::after niet buiten vallen */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+/* Gelaagde verloop-achtergrond achter de hero (sfeerlaag) */
 .hero-bg {
   position: absolute;
   inset: 0;
@@ -72,6 +104,7 @@ body {
     linear-gradient(160deg, #1a1f1e 0%, #313534 60%, #232724 100%);
 }
 
+/* Twee diagonale crème driehoeken onderaan de hero die een scherpe overgang naar de pagina-achtergrond creëren */
 .hero::before {
   content: '';
   position: absolute;
@@ -96,12 +129,15 @@ body {
   z-index: 1;
 }
 
+/* Container voor het logo (mark + naam + tagline) */
 .logo {
   position: relative;
   z-index: 2;
+  /* Boven de hero-bg en de diagonale clips */
   text-align: center;
 }
 
+/* Het oranje vierkantje met "ST" — licht gekanteld voor karakter */
 .logo-mark {
   width: 72px;
   height: 72px;
@@ -118,8 +154,10 @@ body {
   transform: rotate(-4deg);
   box-shadow: 0 8px 32px rgba(255, 87, 31, 0.35);
   animation: logoPop .6s cubic-bezier(.34, 1.56, .64, 1) both;
+  /* Verende inkomst-animatie */
 }
 
+/* Animatie: logo springt iets voorbij zijn eindgrootte voor een veereffect */
 @keyframes logoPop {
   from {
     transform: rotate(-4deg) scale(0.7);
@@ -132,6 +170,7 @@ body {
   }
 }
 
+/* De tekst "STRAAT" onder het logo-mark */
 .logo-name {
   font-size: 2rem;
   font-weight: 900;
@@ -139,18 +178,22 @@ body {
   letter-spacing: 6px;
   text-transform: uppercase;
   animation: fadeUp .5s .2s ease both;
+  /* Schuift iets omhoog bij laden */
 }
 
+/* Kleine ondertitel: "Streetfood — Amsterdam" */
 .logo-tagline {
   font-size: .7rem;
   font-weight: 300;
   color: rgba(255, 252, 247, 0.5);
+  /* Half-transparant crème */
   letter-spacing: 4px;
   text-transform: uppercase;
   margin-top: 4px;
   animation: fadeUp .5s .35s ease both;
 }
 
+/* Herbruikbare animatie: element schuift van onder naar boven in beeld */
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -163,11 +206,13 @@ body {
   }
 }
 
-/* STICKY NAV */
+/* NAVIGATIEBALK:
+    Blijft bovenaan plakken (sticky) terwijl je scrollt. Bevat de zoekbalk en de categorie-filterknopjes */
 .nav-strip {
   position: sticky;
   top: 0;
   z-index: 100;
+  /* Boven alle andere content */
   background: var(--cream);
   border-bottom: 1px solid var(--cream-dark);
   padding: 14px 32px;
@@ -176,15 +221,19 @@ body {
   gap: 16px;
 }
 
+/* Wrapper rondom het zoekveld + zoekicoon */
 .search-wrap {
   flex: 1;
   max-width: 420px;
   position: relative;
+  /* Zodat het SVG-icoon absoluut gepositioneerd kan worden */
 }
 
+/* Het tekstveld voor zoeken */
 .search-wrap input {
   width: 100%;
   padding: 10px 16px 10px 42px;
+  /* Links ruimte voor het icoon */
   border: 1.5px solid var(--cream-dark);
   border-radius: 99px;
   background: var(--cream-dark);
@@ -199,12 +248,14 @@ body {
   color: var(--text-muted);
 }
 
+/* Focus-state: groene rand + subtiele gloed */
 .search-wrap input:focus {
   border-color: var(--green-mid);
   box-shadow: 0 0 0 3px rgba(137, 184, 61, 0.15);
   background: #fff;
 }
 
+/* Het vergrootglas-icoon links in het zoekveld */
 .search-icon {
   position: absolute;
   left: 14px;
@@ -212,15 +263,19 @@ body {
   transform: translateY(-50%);
   color: var(--text-muted);
   pointer-events: none;
+  /* Klik gaat door naar het veld eronder */
   width: 16px;
   height: 16px;
 }
 
+/* Scrollbare rij met categorie-filterknopjes */
 .cat-scroll {
   display: flex;
   gap: 8px;
   overflow-x: auto;
+  /* Horizontaal scrollen op kleine schermen */
   scrollbar-width: none;
+  /* Scrollbar verbergen in Firefox */
   flex: 1;
 }
 
@@ -228,8 +283,12 @@ body {
   display: none;
 }
 
+/* Scrollbar verbergen in Chrome/Safari */
+
+/* Individuele categorie-filterknop (pill-stijl) */
 .cat-btn {
   flex-shrink: 0;
+  /* Knopjes mogen niet kleiner worden */
   padding: 8px 20px;
   border: 1.5px solid var(--cream-dark);
   border-radius: 99px;
@@ -241,20 +300,23 @@ body {
   cursor: pointer;
   transition: all .2s;
   white-space: nowrap;
+  /* Tekst mag niet afbreken */
 }
 
+/* Hover: groene rand */
 .cat-btn:hover {
   border-color: var(--green-mid);
   color: var(--green-deep);
 }
 
+/* Actieve/geselecteerde categorie: donkere gevulde pill */
 .cat-btn.active {
   background: var(--charcoal);
   border-color: var(--charcoal);
   color: var(--cream);
 }
 
-/* MAIN LAYOUT */
+/* HOOFD-LAYOUT: Twee-koloms flex-layout: menu links, winkelwagen rechts */
 .layout {
   display: flex;
   max-width: 1400px;
@@ -262,16 +324,19 @@ body {
   min-height: calc(100vh - 320px);
 }
 
-/* MENU */
+/* MENU SECTIE (linkerkolom): De scrollbare hoofdinhoud met alle productcategorieën */
 .menu-section {
   flex: 1;
+  /* Neemt alle beschikbare breedte op naast de sidebar */
   padding: 48px 40px 80px;
 }
 
+/* Ruimte tussen categorieblokken (bv. "Burgers", "Fries") */
 .category-block {
   margin-bottom: 64px;
 }
 
+/* Categorie-koptekst met een horizontale scheidingslijn erna */
 .category-title {
   font-size: 1.1rem;
   font-weight: 700;
@@ -284,6 +349,7 @@ body {
   gap: 14px;
 }
 
+/* De lijn rechts van de categorie-titel, gegenereerd via CSS */
 .category-title::after {
   content: '';
   flex: 1;
@@ -291,13 +357,14 @@ body {
   background: var(--cream-dark);
 }
 
+/* Responsief grid voor productkaarten — past automatischb het aantal kolommen aan op basis van beschikbare ruimte */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   gap: 20px;
 }
 
-/* PRODUCT CARD */
+/* PRODUCTKAART: Kaart voor een enkel menuproduct (afbeelding + info + knop) */
 .product-card {
   background: #fff;
   border: 1px solid var(--cream-dark);
@@ -309,19 +376,23 @@ body {
   cursor: default;
 }
 
+/* Kaart zweeft iets omhoog bij hover */
 .product-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 40px rgba(49, 53, 52, 0.1);
 }
 
+/* Bovenste helft van de kaart: het emoji/afbeelding-vlak */
 .product-image {
   width: 100%;
   height: 160px;
   position: relative;
+  /* Voor het badge-label dat absoluut gepositioneerd is */
   overflow: hidden;
   flex-shrink: 0;
 }
 
+/* Het gekleurde vlak met de emoji erin */
 .product-image-inner {
   width: 100%;
   height: 100%;
@@ -333,10 +404,12 @@ body {
   transition: transform .35s ease;
 }
 
+/* De emoji schaalt iets op als je over de kaart hovert */
 .product-card:hover .product-image-inner {
   transform: scale(1.05);
 }
 
+/* Badge-label op de afbeelding (bv. "Bestseller", "Vegan") */
 .product-badge {
   position: absolute;
   top: 12px;
@@ -351,17 +424,21 @@ body {
   border-radius: 99px;
 }
 
+/* Variant: groene badge voor vegan/vegetarische opties */
 .badge-green {
   background: var(--green-deep);
 }
 
+/* Onderste helft van de kaart: naam, beschrijving, prijs en knop */
 .product-body {
   padding: 18px 20px 20px;
   flex: 1;
+  /* Zorgt dat alle kaarten in een rij even hoog zijn */
   display: flex;
   flex-direction: column;
 }
 
+/* Productnaam */
 .product-name {
   font-size: 1rem;
   font-weight: 700;
@@ -370,26 +447,31 @@ body {
   line-height: 1.3;
 }
 
+/* Korte beschrijving van het product */
 .product-desc {
   font-size: .8rem;
   color: var(--text-muted);
   line-height: 1.55;
   flex: 1;
+  /* Duwt de footer (prijs + knop) altijd naar de onderkant */
   margin-bottom: 16px;
 }
 
+/* Onderste rij van de kaart: prijs links, toevoeg-knop rechts */
 .product-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
+/* De prijs in de kaart */
 .product-price {
   font-size: 1.15rem;
   font-weight: 700;
   color: var(--charcoal);
 }
 
+/* De ronde "+" knop om het product aan de winkelwagen toe te voegen */
 .add-btn {
   width: 38px;
   height: 38px;
@@ -407,33 +489,40 @@ body {
   line-height: 1;
 }
 
+/* Hover: oranje + iets groter */
 .add-btn:hover {
   background: var(--orange);
   transform: scale(1.12);
 }
 
+/* Klik: iets kleiner voor een press-effect */
 .add-btn:active {
   transform: scale(.95);
 }
 
-/* CART SIDEBAR */
+/* WINKELWAGEN SIDEBAR (rechterkolom): Vaste zijbalk die meescrollt totaan de sticky nav */
 .cart-sidebar {
   width: 340px;
   flex-shrink: 0;
+  /* Breedte blijft altijd 340px, wordt niet kleiner */
   border-left: 1px solid var(--cream-dark);
   background: #fff;
   position: sticky;
   top: 61px;
+  /* Hoogte van de sticky nav, zodat de sidebar daaronder begint */
   height: calc(100vh - 61px);
+  /* Vult de rest van het scherm */
   display: flex;
   flex-direction: column;
 }
 
+/* Bovenste balk van de winkelwagen met de titel en het aantal items */
 .cart-header {
   padding: 28px 28px 20px;
   border-bottom: 1px solid var(--cream-dark);
 }
 
+/* Klein label "JOUW BESTELLING" boven de teller */
 .cart-title {
   font-size: .75rem;
   font-weight: 700;
@@ -443,12 +532,14 @@ body {
   margin-bottom: 4px;
 }
 
+/* Het grote getal dat het aantal items toont (bijv. "3 items") */
 .cart-count {
   font-size: 1.5rem;
   font-weight: 900;
   color: var(--charcoal);
 }
 
+/* Scrollbare lijst met toegevoegde producten */
 .cart-items {
   flex: 1;
   overflow-y: auto;
@@ -457,6 +548,7 @@ body {
   scrollbar-color: var(--cream-dark) transparent;
 }
 
+/* Eén rij in de winkelwagen (emoji-icoon + naam/prijs + hoeveelheidscontrole) */
 .cart-item {
   display: flex;
   align-items: center;
@@ -465,10 +557,12 @@ body {
   border-bottom: 1px solid var(--cream-dark);
 }
 
+/* Laatste item krijgt geen onderrand */
 .cart-item:last-child {
   border-bottom: none;
 }
 
+/* Klein gekleurd vlakje met emoji voor het product in de winkelwagen */
 .cart-item-icon {
   width: 48px;
   height: 48px;
@@ -481,6 +575,7 @@ body {
   flex-shrink: 0;
 }
 
+/* Naam en prijs van het winkelwagen-item */
 .cart-item-info {
   flex: 1;
 }
@@ -497,6 +592,7 @@ body {
   color: var(--text-muted);
 }
 
+/* De "− 1 +" hoeveelheidscontrole per winkelwagen-item */
 .qty-control {
   display: flex;
   align-items: center;
@@ -504,6 +600,7 @@ body {
   flex-shrink: 0;
 }
 
+/* De kleine ronde − en + knoppen naast het getal */
 .qty-btn {
   width: 26px;
   height: 26px;
@@ -521,11 +618,13 @@ body {
   font-weight: 700;
 }
 
+/* Hover: oranje rand en tekst */
 .qty-btn:hover {
   border-color: var(--orange);
   color: var(--orange);
 }
 
+/* Het getal tussen − en + */
 .qty-num {
   font-size: .9rem;
   font-weight: 700;
@@ -534,11 +633,13 @@ body {
   text-align: center;
 }
 
+/* Onderste balk van de winkelwagen: subtotaal, kosten, totaal en bestelknop */
 .cart-footer {
   padding: 20px 28px 28px;
   border-top: 1px solid var(--cream-dark);
 }
 
+/* Rij met een label links en een bedrag rechts (bv. "Subtotaal / €12,00") */
 .cart-subtotal {
   display: flex;
   justify-content: space-between;
@@ -557,6 +658,7 @@ body {
   color: var(--charcoal);
 }
 
+/* De dikgedrukte totaalrij onder de streep */
 .cart-total-row {
   display: flex;
   justify-content: space-between;
@@ -578,6 +680,7 @@ body {
   color: var(--charcoal);
 }
 
+/* De oranje "Bestellen →" knop onderaan de winkelwagen */
 .checkout-btn {
   width: 100%;
   padding: 16px;
@@ -595,6 +698,7 @@ body {
   box-shadow: 0 4px 20px rgba(255, 87, 31, 0.3);
 }
 
+/* Hover: iets donkerder oranje, zweeft omhoog */
 .checkout-btn:hover {
   background: #e84400;
   transform: translateY(-1px);
@@ -605,6 +709,7 @@ body {
   transform: translateY(0);
 }
 
+/* Lege winkelwagen staat: emoji + tekst gecentreerd in de sidebar */
 .empty-cart {
   flex: 1;
   display: flex;
@@ -627,12 +732,14 @@ body {
   line-height: 1.5;
 }
 
-/* TOAST */
+/* TOAST NOTIFICATIE:
+    Kleine pop-up melding die onderin beeld verschijnt bij acties (product toegevoegd, bestelling geplaatst) */
 .toast {
   position: fixed;
   bottom: 32px;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
+  /* Begint iets lager */
   background: var(--charcoal);
   color: var(--cream);
   padding: 12px 24px;
@@ -640,18 +747,22 @@ body {
   font-size: .85rem;
   font-weight: 600;
   opacity: 0;
+  /* Standaard onzichtbaar */
   transition: all .3s;
   pointer-events: none;
+  /* Klik gaat er doorheen */
   z-index: 999;
   white-space: nowrap;
 }
 
+/* Actieve staat: zichtbaar en op juiste positie */
 .toast.show {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
 }
 
-/* RESPONSIVE */
+/* RESPONSIVE (max 900px):
+    Op kleinere schermen stapelt de layout verticaal: menu bovenaan, winkelwagen eronder */
 @media (max-width: 900px) {
   .layout {
     flex-direction: column;
@@ -683,14 +794,120 @@ body {
   .hero {
     height: 200px;
   }
+
+  .hero-actions {
+    top: 14px;
+    right: 14px;
+  }
 }
 
-/* MODAL */
+/* FOOTER: Donkere balk onderaan met logo, contactgegevens en copyright */
+.site-footer {
+  background: var(--charcoal);
+  padding: 28px 40px;
+}
+
+/* Binnenste container: max-breedte + flex-rij */
+.footer-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  /* Op kleine schermen worden items onder elkaar gezet */
+}
+
+/* Linkergedeelte: klein logo-blokje + bedrijfsnaam */
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  /* Neemt de resterende ruimte */
+}
+
+/* Verkleinde versie van het oranje logo-blokje */
+.footer-logo {
+  width: 32px;
+  height: 32px;
+  background: var(--orange);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .7rem;
+  font-weight: 900;
+  color: var(--cream);
+  letter-spacing: -1px;
+  transform: rotate(-4deg);
+  flex-shrink: 0;
+}
+
+/* Naam naast het logo */
+.footer-name {
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--cream);
+  letter-spacing: 1px;
+}
+
+/* Midden: e-mailadres en telefoonnummer naast elkaar */
+.footer-contact {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Klikbare contactlinks — worden groen bij hover */
+.footer-contact a {
+  font-size: .8rem;
+  color: rgba(255, 252, 247, 0.65);
+  text-decoration: none;
+  transition: color .2s;
+}
+
+.footer-contact a:hover {
+  color: var(--green-mid);
+}
+
+/* Het · scheidingsteken tussen e-mail en telefoon */
+.footer-divider {
+  color: rgba(255, 252, 247, 0.25);
+  font-size: .8rem;
+}
+
+/* Copyright-tekst rechts */
+.footer-copy {
+  font-size: .75rem;
+  color: rgba(255, 252, 247, 0.3);
+  white-space: nowrap;
+}
+
+/* Footer-responsive: alles stapelt verticaal op kleine schermen */
+@media (max-width: 700px) {
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .footer-copy {
+    white-space: normal;
+  }
+}
+
+/* LOGIN MODAL:
+    Donkere overlay over de hele pagina met het login-formulier erin. Standaard onzichtbaar, wordt zichtbaar via JS (.open) */
+
+/* De halfdoorzichtige overlay die de pagina bedekt */
 .modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(49, 53, 52, 0.55);
   backdrop-filter: blur(4px);
+  /* Vaagt de achtergrond wazig */
   -webkit-backdrop-filter: blur(4px);
   z-index: 500;
   display: flex;
@@ -698,15 +915,19 @@ body {
   justify-content: center;
   padding: 20px;
   opacity: 0;
+  /* Standaard onzichtbaar */
   pointer-events: none;
+  /* Klikken gaat er doorheen als gesloten */
   transition: opacity .25s ease;
 }
 
+/* Als de JS .open toevoegt: zichtbaar en klikbaar */
 .modal-overlay.open {
   opacity: 1;
   pointer-events: all;
 }
 
+/* Het witte kaartje in het midden van de overlay */
 .modal {
   background: var(--cream);
   border-radius: 24px;
@@ -716,13 +937,16 @@ body {
   position: relative;
   box-shadow: 0 24px 80px rgba(49, 53, 52, 0.2);
   transform: translateY(20px) scale(0.97);
+  /* Begint iets lager en kleiner */
   transition: transform .3s cubic-bezier(.34, 1.56, .64, 1);
 }
 
+/* Verende animatie als de modal opent */
 .modal-overlay.open .modal {
   transform: translateY(0) scale(1);
 }
 
+/* De × sluitknop rechtsboven in de modal */
 .modal-close {
   position: absolute;
   top: 16px;
@@ -742,11 +966,13 @@ body {
   transition: background .15s, color .15s;
 }
 
+/* Hover: wordt donker */
 .modal-close:hover {
   background: var(--charcoal);
   color: var(--cream);
 }
 
+/* Klein oranje logo-blokje bovenin de modal */
 .modal-logo {
   width: 48px;
   height: 48px;
@@ -763,6 +989,7 @@ body {
   margin-bottom: 20px;
 }
 
+/* Grote koptekst in de modal: "Welkom terug" */
 .modal-title {
   font-size: 1.5rem;
   font-weight: 900;
@@ -770,24 +997,60 @@ body {
   margin-bottom: 6px;
 }
 
+/* Kleine ondertitel in de modal */
 .modal-sub {
   font-size: .85rem;
   color: var(--text-muted);
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 
+/* ROL KEUZE TOGGLE: Twee pill-knoppen waarmee de gebruiker kiest of hij inlogt als Bezoeker of als Admin */
+.role-toggle {
+  display: flex;
+  gap: 0;
+  background: var(--cream-dark);
+  border-radius: 99px;
+  padding: 4px;
+  margin-bottom: 24px;
+}
+
+/* Eén rol-knop in de toggle */
+.role-btn {
+  flex: 1;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 99px;
+  background: transparent;
+  font-family: inherit;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background .2s, color .2s, box-shadow .2s;
+}
+
+/* Actieve rol: witte pill met schaduw */
+.role-btn.active {
+  background: #fff;
+  color: var(--charcoal);
+  box-shadow: 0 2px 8px rgba(49, 53, 52, 0.12);
+}
+
+/* Het formulier: velden verticaal gestapeld */
 .modal-form {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
+/* Eén veld-groep: label boven het invoerveld */
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
+/* Label boven het formulierveld */
 .form-group label {
   font-size: .78rem;
   font-weight: 700;
@@ -796,6 +1059,7 @@ body {
   color: var(--charcoal);
 }
 
+/* Tekstveld (e-mail of wachtwoord) */
 .form-group input {
   padding: 12px 16px;
   border: 1.5px solid var(--cream-dark);
@@ -813,19 +1077,23 @@ body {
   color: var(--text-muted);
 }
 
+/* Focus-state: groene rand + gloed */
 .form-group input:focus {
   border-color: var(--green-mid);
   box-shadow: 0 0 0 3px rgba(137, 184, 61, 0.15);
 }
 
+/* Wrapper voor wachtwoordveld + toon/verberg-knop */
 .password-wrap {
   position: relative;
 }
 
+/* Extra padding rechts zodat de tekst niet onder het oogicoon valt */
 .password-wrap input {
   padding-right: 46px;
 }
 
+/* Het oogicoon waarmee je het wachtwoord zichtbaar maakt */
 .toggle-pw {
   position: absolute;
   right: 12px;
@@ -845,6 +1113,7 @@ body {
   color: var(--charcoal);
 }
 
+/* "Wachtwoord vergeten?" link rechtsonder het wachtwoordveld */
 .forgot-link {
   font-size: .8rem;
   color: var(--green-deep);
@@ -858,6 +1127,7 @@ body {
   text-decoration: underline;
 }
 
+/* De donkere "Inloggen" submitknop in het formulier */
 .modal-submit {
   width: 100%;
   padding: 14px;
@@ -875,6 +1145,7 @@ body {
   transition: background .2s, transform .15s;
 }
 
+/* Hover: wordt oranje */
 .modal-submit:hover {
   background: var(--orange);
   transform: translateY(-1px);
@@ -884,11 +1155,13 @@ body {
   transform: translateY(0);
 }
 
+/* Loading staat: grijs en niet klikbaar terwijl JS de "login" simuleert */
 .modal-submit.loading {
   background: var(--text-muted);
   pointer-events: none;
 }
 
+/* "Nog geen account? Registreer je gratis" onderaan de modal */
 .modal-register {
   text-align: center;
   font-size: .82rem;
@@ -904,4 +1177,337 @@ body {
 
 .modal-register a:hover {
   text-decoration: underline;
+}
+
+/* ADMIN PANEEL OVERLAY:
+    Zijpaneel dat van rechts inschuift als de admin op de Admin-knop klikt. Bedekt de volledige hoogte van het scherm. */
+.admin-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(49, 53, 52, 0.45);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 400;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease;
+}
+
+.admin-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Het paneel zelf — schuift van rechts in */
+.admin-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 520px;
+  max-width: 100vw;
+  background: var(--cream);
+  z-index: 401;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -8px 0 40px rgba(49, 53, 52, 0.15);
+  transform: translateX(100%);
+  /* Begint buiten beeld */
+  transition: transform .35s cubic-bezier(.4, 0, .2, 1);
+}
+
+.admin-overlay.open .admin-panel {
+  transform: translateX(0);
+  /* Schuift in beeld */
+}
+
+/* Bovenste balk van het admin paneel */
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid var(--cream-dark);
+  flex-shrink: 0;
+}
+
+.admin-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Groen logo-blokje in de admin header */
+.admin-logo {
+  width: 36px;
+  height: 36px;
+  background: var(--green-deep);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .7rem;
+  font-weight: 900;
+  color: var(--cream);
+  letter-spacing: -1px;
+  transform: rotate(-4deg);
+  flex-shrink: 0;
+}
+
+.admin-panel-title {
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--charcoal);
+  letter-spacing: 1px;
+}
+
+.admin-panel-sub {
+  font-size: .75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Sluitknop rechts in de admin header */
+.admin-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: var(--cream-dark);
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s, color .15s;
+}
+
+.admin-close:hover {
+  background: var(--charcoal);
+  color: var(--cream);
+}
+
+/* Scrollbare lijst van alle menu-items in het paneel */
+.admin-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 28px 24px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--cream-dark) transparent;
+}
+
+/* Sectie-label boven een groep items (bv. "BURGERS") */
+.admin-section-label {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 20px 0 10px;
+}
+
+.admin-section-label:first-child {
+  margin-top: 4px;
+}
+
+/* Eén rij in het admin paneel per product */
+.admin-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--cream-dark);
+}
+
+.admin-row:last-child {
+  border-bottom: none;
+}
+
+/* Emoji-icoontje links in de rij */
+.admin-row-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--cream-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+/* Tekstveld voor de productnaam in de admin rij */
+.admin-row-name {
+  flex: 1;
+  padding: 7px 10px;
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--charcoal);
+  background: #fff;
+  outline: none;
+  transition: border-color .2s;
+}
+
+.admin-row-name:focus {
+  border-color: var(--green-mid);
+}
+
+/* Prijsveld (smal) in de admin rij */
+.admin-row-price {
+  width: 76px;
+  padding: 7px 10px;
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--charcoal);
+  background: #fff;
+  outline: none;
+  transition: border-color .2s;
+  text-align: right;
+}
+
+.admin-row-price:focus {
+  border-color: var(--green-mid);
+}
+
+/* Verwijder-knop (rood kruisje) rechts in de admin rij */
+.admin-row-del {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: #fde8e4;
+  color: #c0392b;
+  font-size: .9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background .15s;
+}
+
+.admin-row-del:hover {
+  background: #f5b7b1;
+}
+
+/* Onderste balk van het admin paneel: opslaan en nieuw-item knoppen */
+.admin-footer {
+  padding: 16px 28px 24px;
+  border-top: 1px solid var(--cream-dark);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* "Nieuw item toevoegen" knop — volledige breedte, gestippeld */
+.admin-add-btn {
+  width: 100%;
+  padding: 11px;
+  border: 1.5px dashed var(--cream-dark);
+  border-radius: 10px;
+  background: transparent;
+  font-family: inherit;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+
+.admin-add-btn:hover {
+  border-color: var(--green-mid);
+  color: var(--green-deep);
+}
+
+/* "Wijzigingen opslaan" knop — donker, volledige breedte */
+.admin-save-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--charcoal);
+  color: var(--cream);
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+}
+
+.admin-save-btn:hover {
+  background: var(--green-deep);
+  transform: translateY(-1px);
+}
+
+.admin-save-btn:active {
+  transform: translateY(0);
+}
+
+/* Formulier om een nieuw item toe te voegen — standaard verborgen */
+.admin-new-form {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  background: #fff;
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 10px;
+}
+
+.admin-new-form.open {
+  display: flex;
+}
+
+/* Rij met twee velden naast elkaar in het nieuwe-item formulier */
+.admin-new-row {
+  display: flex;
+  gap: 10px;
+}
+
+/* Gedeelde input-stijl voor het nieuwe-item formulier */
+.admin-new-form input,
+.admin-new-form select {
+  flex: 1;
+  padding: 9px 12px;
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: .85rem;
+  color: var(--charcoal);
+  background: var(--cream);
+  outline: none;
+  transition: border-color .2s;
+}
+
+.admin-new-form input:focus,
+.admin-new-form select:focus {
+  border-color: var(--green-mid);
+}
+
+/* Bevestig-knop voor het nieuwe-item formulier */
+.admin-new-confirm {
+  padding: 10px;
+  background: var(--green-deep);
+  color: var(--cream);
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: .85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s;
+}
+
+.admin-new-confirm:hover {
+  background: #4a7028;
 }
