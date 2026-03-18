@@ -1,5 +1,6 @@
 
 <?php
+
 //  Connectie naar database
 $host = 'db';
 $db = 'mydatabase';
