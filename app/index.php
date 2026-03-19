@@ -3,6 +3,21 @@
 
 include_once 'includes/database.php';
 
+// //  Define SQL statement
+// $sql = "SELECT * FROM gerechten";
+
+// //  Prepare SQL statement
+// $statement = $pdo->prepare($sql);
+
+// //  Exacute SQL statement
+// $statement->execute();
+
+// $gerechten = $statement->fetchAll();
+
+// echo "<pre>";
+// print_r($gerechten);
+// echo "</pre>";
+
 ?>
 
 <!DOCTYPE html>

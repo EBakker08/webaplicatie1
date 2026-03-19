@@ -12,7 +12,7 @@ $charset = 'utf8mb4';
 $opties = [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES => false,
+    PDO::ATTR_EMULATE_PREPARES => false
 ];
 
 //  dsn
@@ -29,20 +29,5 @@ try {
 //  Stop (die)
     die("Sorry. database probleem");
 }
-
-// //  Define SQL statement
-// $sql = "SELECT * FROM studenten WHERE leeftijd > 16";
-
-// //  Prepare SQL statement
-// $statement = $pdo->prepare($sql);
-
-// //  Exacute SQL statement
-// $statement->execute();
-
-// $studenten = $statement->fetchAll();
-
-// echo "<pre>";
-// print_r($studenten);
-// echo "</pre>";
 
 ?>
