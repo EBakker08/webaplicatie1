@@ -1,7 +1,7 @@
 
 <?php
 
-include_once 'database.php';
+include_once 'includes/database.php';
 
 ?>
 
@@ -13,9 +13,7 @@ include_once 'database.php';
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>STRAAT | Arnhem</title>
   <link rel="icon" href="img/logo.png" type="image/png" alt="STRAAT logo">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&display=swap"
-    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -677,7 +675,7 @@ include_once 'database.php';
   <!-- ============================================================
      JAVASCRIPT — Alle interactieve logica van de pagina
      ============================================================ -->
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <!-- <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
   <script>
 
     /* ── WINKELWAGEN STATE ──────────────────────────────────────
@@ -1174,7 +1172,7 @@ include_once 'database.php';
       });
     });
 
-  </script>
+  </script> -->
 </body>
 
 </html>
