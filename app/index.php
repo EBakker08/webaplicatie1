@@ -87,114 +87,38 @@ include_once 'includes/database.php';
         <h2 class="category-title">Burgers</h2>
         <div class="product-grid">
 
-          <article class="product-card" data-cat="burgers" data-name="Straat Classic" data-price="13.50"
-            data-emoji="🍔">
-            <div class="product-image">
-              <div class="product-image-inner"><img src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT"
-                  alt="Product foto" style="width:100%;height:100%;object-fit:cover;" /></div>
-              <span class="product-badge">Bestseller</span>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Straat Classic</h3>
-              <p class="product-desc">Dikke Black Angus smashed patty, huisgemaakte burgersaus, augurk en karamelui op
-                een brioche bun.</p>
-              <div class="product-footer">
-                <span class="product-price">€ 13,50</span>
-                <button class="add-btn" aria-label="Straat Classic toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        <?php
+        
+        //  Define SQL statement
+        $sql = "SELECT * FROM gerechten WHERE type = 'burgers'";
 
-          <article class="product-card" data-cat="burgers" data-name="Double Trouble" data-price="16.90"
-            data-emoji="🍔">
-            <div class="product-image">
-              <div class="product-image-inner"><img src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT"
-                  alt="Product foto" style="width:100%;height:100%;object-fit:cover;" /></div>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Double Trouble</h3>
-              <p class="product-desc">Twee gegrilde patties, American cheese, crispy bacon, jalapeño mayo en verse
-                tomaat.</p>
-              <div class="product-footer">
-                <span class="product-price">€ 16,90</span>
-                <button class="add-btn" aria-label="Double Trouble toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        //  Prepare SQL statement
+        $statement = $pdo->prepare($sql);
 
-          <article class="product-card" data-cat="burgers" data-name="Green Monster" data-price="14.20" data-emoji="🥗">
-            <div class="product-image">
-              <!-- Inline stijl overschrijft de standaard crème gradient voor dit product -->
-              <div class="product-image-inner" style="background:linear-gradient(135deg,#ddf0c0,#c5e89a)"><img
-                  src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT" alt="Product foto"
-                  style="width:100%;height:100%;object-fit:cover;" /></div>
-              <!-- badge-green geeft de groene kleur ipv oranje -->
-              <span class="product-badge badge-green">Vegan</span>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Green Monster</h3>
-              <p class="product-desc">Plant-based patty met avocado, rucola, tomaat en frisse citroen-tahini dressing.
-              </p>
-              <div class="product-footer">
-                <span class="product-price">€ 14,20</span>
-                <button class="add-btn" aria-label="Green Monster toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        //  Exacute SQL statement
+        $statement->execute();
 
-          <article class="product-card" data-cat="burgers" data-name="Crispy Chicken" data-price="13.90"
-            data-emoji="🍗">
-            <div class="product-image">
-              <div class="product-image-inner" style="background:linear-gradient(135deg,#fdf3d5,#f5e0a0)"><img
-                  src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT" alt="Product foto"
-                  style="width:100%;height:100%;object-fit:cover;" /></div>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Crispy Chicken</h3>
-              <p class="product-desc">Gefrituurde kipfilet met koolslaw, sriracha honing en ingelegde komkommer.</p>
-              <div class="product-footer">
-                <span class="product-price">€ 13,90</span>
-                <button class="add-btn" aria-label="Crispy Chicken toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        $burgers = $statement->fetchAll();
 
-          <article class="product-card" data-cat="burgers" data-name="Smoky BBQ Burger" data-price="15.50"
-            data-emoji="🍔">
-            <div class="product-image">
-              <div class="product-image-inner" style="background:linear-gradient(135deg,#f5ddd5,#e8b8a0)"><img
-                  src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT" alt="Product foto"
-                  style="width:100%;height:100%;object-fit:cover;" /></div>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Smoky BBQ Burger</h3>
-              <p class="product-desc">Gegrilde patty met gerookte BBQ saus, cheddar, bacon en krokante uitjes op een
-                sesam bun.</p>
-              <div class="product-footer">
-                <span class="product-price">€ 15,50</span>
-                <button class="add-btn" aria-label="Smoky BBQ Burger toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        foreach($burgers as $burger) {
+          echo "<article class='product-card'>";
+          echo    "<div class='product-image'>";
+          echo      "<div class='product-image-inner'>";
+          echo        "<img src='img/" . $burger['image'] . "' alt='Product foto' style='width:100%;height:100%;object-fit:cover;' />";
+          echo      "</div>";
+          echo    "</div>";
+          echo    "<div class='product-body'>";
+          echo      "<h3 class='product-name'>" . $burger['titel'] . "</h3>";
+          echo      "<p class='product-desc'>" . $burger['beschrijving'] . "</p>";
+          echo      "<div class='product-footer'>";
+          echo        "<span class='product-price'>€ " . $burger['prijs'] . "</span>";
+          echo        "<button class='add-btn'>+</button>";
+          echo      "</div>";
+          echo    "</div>";
+          echo "</article>";
+        }
 
-          <article class="product-card" data-cat="burgers" data-name="Fire Bird Burger" data-price="14.50"
-            data-emoji="🌶️">
-            <div class="product-image">
-              <div class="product-image-inner" style="background:linear-gradient(135deg,#fde8d5,#f9bea0)"><img
-                  src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT" alt="Product foto"
-                  style="width:100%;height:100%;object-fit:cover;" /></div>
-              <span class="product-badge">Pittig</span>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Fire Bird Burger</h3>
-              <p class="product-desc">Dubbel gemarineerde pittige kip, ghost pepper mayo, jalapeño's en ijsbergsla. Niet
-                voor angsthazen.</p>
-              <div class="product-footer">
-                <span class="product-price">€ 14,50</span>
-                <button class="add-btn" aria-label="Fire Bird Burger toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        ?>
 
         </div>
       </div>
@@ -204,95 +128,79 @@ include_once 'includes/database.php';
         <h2 class="category-title">Loaded Fries</h2>
         <div class="product-grid">
 
-          <article class="product-card" data-cat="fries" data-name="Truffle Fries" data-price="9.50" data-emoji="🍟">
-            <div class="product-image">
-              <div class="product-image-inner"><img src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT"
-                  alt="Product foto" style="width:100%;height:100%;object-fit:cover;" /></div>
-              <span class="product-badge">Fan fave</span>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Truffle Fries</h3>
-              <p class="product-desc">Huisgesneden friet met truffelolie, Parmezaan en verse peterselie.</p>
-              <div class="product-footer">
-                <span class="product-price">€ 9,50</span>
-                <button class="add-btn" aria-label="Truffle Fries toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        <?php
+        
+        //  Define SQL statement
+        $sql = "SELECT * FROM gerechten WHERE type = 'friet'";
 
-          <article class="product-card" data-cat="fries" data-name="Cheese Fries" data-price="8.90" data-emoji="🧀">
-            <div class="product-image">
-              <div class="product-image-inner" style="background:linear-gradient(135deg,#fef9d5,#fce79a)"><img
-                  src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT" alt="Product foto"
-                  style="width:100%;height:100%;object-fit:cover;" /></div>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Cheese Fries</h3>
-              <p class="product-desc">Krokante friet overgoten met romige cheddar saus en crispy ui.</p>
-              <div class="product-footer">
-                <span class="product-price">€ 8,90</span>
-                <button class="add-btn" aria-label="Cheese Fries toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        //  Prepare SQL statement
+        $statement = $pdo->prepare($sql);
 
-          <article class="product-card" data-cat="fries" data-name="Pulled Pork Fries" data-price="11.50"
-            data-emoji="🥩">
-            <div class="product-image">
-              <div class="product-image-inner"><img src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT"
-                  alt="Product foto" style="width:100%;height:100%;object-fit:cover;" /></div>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Pulled Pork Fries</h3>
-              <p class="product-desc">Friet met langzaam gegaarde pulled pork, BBQ saus en jalapeño's.</p>
-              <div class="product-footer">
-                <span class="product-price">€ 11,50</span>
-                <button class="add-btn" aria-label="Pulled Pork Fries toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        //  Exacute SQL statement
+        $statement->execute();
+
+        $friet = $statement->fetchAll();
+
+        foreach($friet as $frietje) {
+          echo "<article class='product-card'>";
+          echo    "<div class='product-image'>";
+          echo      "<div class='product-image-inner'>";
+          echo        "<img src='img/" . $frietje['image'] . "' alt='Product foto' style='width:100%;height:100%;object-fit:cover;' />";
+          echo      "</div>";
+          echo    "</div>";
+          echo    "<div class='product-body'>";
+          echo      "<h3 class='product-name'>" . $frietje['titel'] . "</h3>";
+          echo      "<p class='product-desc'>" . $frietje['beschrijving'] . "</p>";
+          echo      "<div class='product-footer'>";
+          echo        "<span class='product-price'>€ " . $frietje['prijs'] . "</span>";
+          echo        "<button class='add-btn'>+</button>";
+          echo      "</div>";
+          echo    "</div>";
+          echo "</article>";
+        }
+
+        ?>
 
         </div>
       </div>
 
       <!-- ── KEBAB & SHOARMA ──────────────────────────────────── -->
       <div class="category-block" data-section="kebab">
-        <h2 class="category-title">Kebab &amp; Shoarma</h2>
+        <h2 class="category-title">Schotels</h2>
         <div class="product-grid">
 
-          <article class="product-card" data-cat="kebab" data-name="Klassieke Shoarma" data-price="11.00"
-            data-emoji="🌯">
-            <div class="product-image">
-              <div class="product-image-inner"><img src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT"
-                  alt="Product foto" style="width:100%;height:100%;object-fit:cover;" /></div>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Klassieke Shoarma</h3>
-              <p class="product-desc">Malse kipshoarma met verse sla, tomaat, ui en knoflooksaus in een warm pita brood.
-              </p>
-              <div class="product-footer">
-                <span class="product-price">€ 11,00</span>
-                <button class="add-btn" aria-label="Klassieke Shoarma toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        <?php
+        
+        //  Define SQL statement
+        $sql = "SELECT * FROM gerechten WHERE type = 'schotels'";
 
-          <article class="product-card" data-cat="kebab" data-name="Kebab Schotel" data-price="12.50" data-emoji="🥙">
-            <div class="product-image">
-              <div class="product-image-inner"><img src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT"
-                  alt="Product foto" style="width:100%;height:100%;object-fit:cover;" /></div>
-              <span class="product-badge">Nieuw</span>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Kebab Schotel</h3>
-              <p class="product-desc">Gegrild kebabvlees op een bedje van fijngesneden groenten met tzatziki en hummus.
-              </p>
-              <div class="product-footer">
-                <span class="product-price">€ 12,50</span>
-                <button class="add-btn" aria-label="Kebab Schotel toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        //  Prepare SQL statement
+        $statement = $pdo->prepare($sql);
+
+        //  Exacute SQL statement
+        $statement->execute();
+
+        $schotels = $statement->fetchAll();
+
+        foreach($schotels as $schotel) {
+          echo "<article class='product-card'>";
+          echo    "<div class='product-image'>";
+          echo      "<div class='product-image-inner'>";
+          echo        "<img src='img/" . $schotel['image'] . "' alt='Product foto' style='width:100%;height:100%;object-fit:cover;' />";
+          echo      "</div>";
+          echo    "</div>";
+          echo    "<div class='product-body'>";
+          echo      "<h3 class='product-name'>" . $schotel['titel'] . "</h3>";
+          echo      "<p class='product-desc'>" . $schotel['beschrijving'] . "</p>";
+          echo      "<div class='product-footer'>";
+          echo        "<span class='product-price'>€ " . $schotel['prijs'] . "</span>";
+          echo        "<button class='add-btn'>+</button>";
+          echo      "</div>";
+          echo    "</div>";
+          echo "</article>";
+        }
+
+        ?>
 
         </div>
       </div>
@@ -302,42 +210,38 @@ include_once 'includes/database.php';
         <h2 class="category-title">Kapsalon</h2>
         <div class="product-grid">
 
-          <article class="product-card" data-cat="kapsalon" data-name="Kapsalon Doner" data-price="13.50"
-            data-emoji="🥗">
-            <div class="product-image">
-              <div class="product-image-inner" style="background:linear-gradient(135deg,#f5f0d5,#ece09a)"><img
-                  src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT" alt="Product foto"
-                  style="width:100%;height:100%;object-fit:cover;" /></div>
-              <span class="product-badge">Favoriet</span>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Kapsalon Doner</h3>
-              <p class="product-desc">Friet met donervlees, gesmolten Gouda, ijsbergsla, tomaat en knoflooksaus. Een
-                klassieker van de straat.</p>
-              <div class="product-footer">
-                <span class="product-price">€ 13,50</span>
-                <button class="add-btn" aria-label="Kapsalon Doner toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        <?php
+        
+        //  Define SQL statement
+        $sql = "SELECT * FROM gerechten WHERE type = 'kapsalon'";
 
-          <article class="product-card" data-cat="kapsalon" data-name="Kapsalon Shoarma" data-price="13.50"
-            data-emoji="🥗">
-            <div class="product-image">
-              <div class="product-image-inner" style="background:linear-gradient(135deg,#fdecd5,#f5cfa0)"><img
-                  src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT" alt="Product foto"
-                  style="width:100%;height:100%;object-fit:cover;" /></div>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Kapsalon Shoarma</h3>
-              <p class="product-desc">Friet met kipshoarma, gesmolten Gouda, verse salade en huisgemaakte sambal &amp;
-                knoflooksaus.</p>
-              <div class="product-footer">
-                <span class="product-price">€ 13,50</span>
-                <button class="add-btn" aria-label="Kapsalon Shoarma toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        //  Prepare SQL statement
+        $statement = $pdo->prepare($sql);
+
+        //  Exacute SQL statement
+        $statement->execute();
+
+        $kapsalons = $statement->fetchAll();
+
+        foreach($kapsalons as $kapsalon) {
+          echo "<article class='product-card'>";
+          echo    "<div class='product-image'>";
+          echo      "<div class='product-image-inner'>";
+          echo        "<img src='img/" . $kapsalon['image'] . "' alt='Product foto' style='width:100%;height:100%;object-fit:cover;' />";
+          echo      "</div>";
+          echo    "</div>";
+          echo    "<div class='product-body'>";
+          echo      "<h3 class='product-name'>" . $kapsalon['titel'] . "</h3>";
+          echo      "<p class='product-desc'>" . $kapsalon['beschrijving'] . "</p>";
+          echo      "<div class='product-footer'>";
+          echo        "<span class='product-price'>€ " . $kapsalon['prijs'] . "</span>";
+          echo        "<button class='add-btn'>+</button>";
+          echo      "</div>";
+          echo    "</div>";
+          echo "</article>";
+        }
+
+        ?>
 
         </div>
       </div>
@@ -347,39 +251,38 @@ include_once 'includes/database.php';
         <h2 class="category-title">Durum</h2>
         <div class="product-grid">
 
-          <article class="product-card" data-cat="durum" data-name="Straat Durum" data-price="10.50" data-emoji="🫔">
-            <div class="product-image">
-              <div class="product-image-inner"><img src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT"
-                  alt="Product foto" style="width:100%;height:100%;object-fit:cover;" /></div>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Straat Durum</h3>
-              <p class="product-desc">Dunne durum met gemengd gegrild vlees, verse groenten, geraspte kaas en huissaus.
-              </p>
-              <div class="product-footer">
-                <span class="product-price">€ 10,50</span>
-                <button class="add-btn" aria-label="Straat Durum toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        <?php
+        
+        //  Define SQL statement
+        $sql = "SELECT * FROM gerechten WHERE type = 'durum'";
 
-          <article class="product-card" data-cat="durum" data-name="Spicy Kip Durum" data-price="10.90"
-            data-emoji="🌶️">
-            <div class="product-image">
-              <div class="product-image-inner" style="background:linear-gradient(135deg,#fde8d5,#f9bea0)"><img
-                  src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT" alt="Product foto"
-                  style="width:100%;height:100%;object-fit:cover;" /></div>
-              <span class="product-badge">Pittig</span>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Spicy Kip Durum</h3>
-              <p class="product-desc">Gemarineerde kip met sriracha, rode peper, coleslaw en limoen crème.</p>
-              <div class="product-footer">
-                <span class="product-price">€ 10,90</span>
-                <button class="add-btn" aria-label="Spicy Kip Durum toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        //  Prepare SQL statement
+        $statement = $pdo->prepare($sql);
+
+        //  Exacute SQL statement
+        $statement->execute();
+
+        $durums = $statement->fetchAll();
+
+        foreach($durums as $durum) {
+          echo "<article class='product-card'>";
+          echo    "<div class='product-image'>";
+          echo      "<div class='product-image-inner'>";
+          echo        "<img src='img/" . $durum['image'] . "' alt='Product foto' style='width:100%;height:100%;object-fit:cover;' />";
+          echo      "</div>";
+          echo    "</div>";
+          echo    "<div class='product-body'>";
+          echo      "<h3 class='product-name'>" . $durum['titel'] . "</h3>";
+          echo      "<p class='product-desc'>" . $durum['beschrijving'] . "</p>";
+          echo      "<div class='product-footer'>";
+          echo        "<span class='product-price'>€ " . $durum['prijs'] . "</span>";
+          echo        "<button class='add-btn'>+</button>";
+          echo      "</div>";
+          echo    "</div>";
+          echo "</article>";
+        }
+
+        ?>
 
         </div>
       </div>
@@ -389,36 +292,38 @@ include_once 'includes/database.php';
         <h2 class="category-title">Snacks</h2>
         <div class="product-grid">
 
-          <article class="product-card" data-cat="snacks" data-name="Mozzarella Sticks" data-price="7.50"
-            data-emoji="🧀">
-            <div class="product-image">
-              <div class="product-image-inner"><img src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT"
-                  alt="Product foto" style="width:100%;height:100%;object-fit:cover;" /></div>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Mozzarella Sticks</h3>
-              <p class="product-desc">Knapperige mozzarella sticks met marinara saus — 6 stuks per portie.</p>
-              <div class="product-footer">
-                <span class="product-price">€ 7,50</span>
-                <button class="add-btn" aria-label="Mozzarella Sticks toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        <?php
+        
+        //  Define SQL statement
+        $sql = "SELECT * FROM gerechten WHERE type = 'snacks'";
 
-          <article class="product-card" data-cat="snacks" data-name="Onion Rings" data-price="6.50" data-emoji="🍩">
-            <div class="product-image">
-              <div class="product-image-inner"><img src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT"
-                  alt="Product foto" style="width:100%;height:100%;object-fit:cover;" /></div>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Onion Rings</h3>
-              <p class="product-desc">Dikke, knapperig gepaneerde uienringen met chipotle dip.</p>
-              <div class="product-footer">
-                <span class="product-price">€ 6,50</span>
-                <button class="add-btn" aria-label="Onion Rings toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        //  Prepare SQL statement
+        $statement = $pdo->prepare($sql);
+
+        //  Exacute SQL statement
+        $statement->execute();
+
+        $snacks = $statement->fetchAll();
+
+        foreach($snacks as $snack) {
+          echo "<article class='product-card'>";
+          echo    "<div class='product-image'>";
+          echo      "<div class='product-image-inner'>";
+          echo        "<img src='img/" . $snack['image'] . "' alt='Product foto' style='width:100%;height:100%;object-fit:cover;' />";
+          echo      "</div>";
+          echo    "</div>";
+          echo    "<div class='product-body'>";
+          echo      "<h3 class='product-name'>" . $snack['titel'] . "</h3>";
+          echo      "<p class='product-desc'>" . $snack['beschrijving'] . "</p>";
+          echo      "<div class='product-footer'>";
+          echo        "<span class='product-price'>€ " . $snack['prijs'] . "</span>";
+          echo        "<button class='add-btn'>+</button>";
+          echo      "</div>";
+          echo    "</div>";
+          echo "</article>";
+        }
+
+        ?>
 
         </div>
       </div>
@@ -428,69 +333,38 @@ include_once 'includes/database.php';
         <h2 class="category-title">Dranken</h2>
         <div class="product-grid">
 
-          <article class="product-card" data-cat="drinks" data-name="Huislimonade" data-price="4.50" data-emoji="🍋">
-            <div class="product-image">
-              <div class="product-image-inner" style="background:linear-gradient(135deg,#fffde0,#fef5a0)"><img
-                  src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT" alt="Product foto"
-                  style="width:100%;height:100%;object-fit:cover;" /></div>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Huislimonade</h3>
-              <p class="product-desc">Dagvers geperste limonade met munt en een vleugje gember.</p>
-              <div class="product-footer">
-                <span class="product-price">€ 4,50</span>
-                <button class="add-btn" aria-label="Huislimonade toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        <?php
 
-          <article class="product-card" data-cat="drinks" data-name="Cola" data-price="3.00" data-emoji="🥤">
-            <div class="product-image">
-              <div class="product-image-inner" style="background:linear-gradient(135deg,#f5d5d5,#e89a9a)"><img
-                  src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT" alt="Product foto"
-                  style="width:100%;height:100%;object-fit:cover;" /></div>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Cola</h3>
-              <p class="product-desc">IJskoude Coca-Cola, geserveerd met ijs en een schijfje citroen.</p>
-              <div class="product-footer">
-                <span class="product-price">€ 3,00</span>
-                <button class="add-btn" aria-label="Cola toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        //  Define SQL statement
+        $sql = "SELECT * FROM gerechten WHERE type = 'drankjes'";
 
-          <article class="product-card" data-cat="drinks" data-name="Fanta" data-price="3.00" data-emoji="🍊">
-            <div class="product-image">
-              <div class="product-image-inner" style="background:linear-gradient(135deg,#fef0d5,#fcc97a)"><img
-                  src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT" alt="Product foto"
-                  style="width:100%;height:100%;object-fit:cover;" /></div>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Fanta</h3>
-              <p class="product-desc">Verfrissende Fanta Orange, geserveerd ijskoud met ijs.</p>
-              <div class="product-footer">
-                <span class="product-price">€ 3,00</span>
-                <button class="add-btn" aria-label="Fanta toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        //  Prepare SQL statement
+        $statement = $pdo->prepare($sql);
 
-          <article class="product-card" data-cat="drinks" data-name="Ijsthee" data-price="3.50" data-emoji="🍵">
-            <div class="product-image">
-              <div class="product-image-inner" style="background:linear-gradient(135deg,#edf5d5,#cce89a)"><img
-                  src="https://placehold.co/400x320/e8e2d8/a09880?text=STRAAT" alt="Product foto"
-                  style="width:100%;height:100%;object-fit:cover;" /></div>
-            </div>
-            <div class="product-body">
-              <h3 class="product-name">Ijsthee</h3>
-              <p class="product-desc">Huisgemaakte ijsthee met citroen en een vleugje honing — licht en verfrissend.</p>
-              <div class="product-footer">
-                <span class="product-price">€ 3,50</span>
-                <button class="add-btn" aria-label="Ijsthee toevoegen">+</button>
-              </div>
-            </div>
-          </article>
+        //  Exacute SQL statement
+        $statement->execute();
+
+        $drankjes = $statement->fetchAll();
+
+        foreach($drankjes as $drankje) {
+          echo "<article class='product-card'>";
+          echo    "<div class='product-image'>";
+          echo      "<div class='product-image-inner'>";
+          echo        "<img src='img/" . $drankje['image'] . "' alt='Product foto' style='width:100%;height:100%;object-fit:cover;' />";
+          echo      "</div>";
+          echo    "</div>";
+          echo    "<div class='product-body'>";
+          echo      "<h3 class='product-name'>" . $drankje['titel'] . "</h3>";
+          echo      "<p class='product-desc'>" . $drankje['beschrijving'] . "</p>";
+          echo      "<div class='product-footer'>";
+          echo        "<span class='product-price'>€ " . $drankje['prijs'] . "</span>";
+          echo        "<button class='add-btn'>+</button>";
+          echo      "</div>";
+          echo    "</div>";
+          echo "</article>";
+        }
+
+        ?>
 
         </div>
       </div>
