@@ -55,13 +55,11 @@ include_once 'includes/database.php';
 
     <!-- Zoekbalk met vergroot-glas icoon -->
     <div class="search-wrap">
-      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="11" cy="11" r="8" />
         <path d="m21 21-4.35-4.35" />
       </svg>
-      <!-- id="searchInput" wordt door JS gebruikt voor de zoekfunctie -->
-      <input type="search" placeholder="Zoek in het menu..." aria-label="Zoek gerechten" id="searchInput" />
+      <input type="search" placeholder="Zoek in het menu..." aria-label="Zoek gerechten"/>
     </div>
 
     <!-- Categorie-filterknopjes — data-cat wordt door JS gebruikt om te filteren -->
@@ -104,8 +102,15 @@ include_once 'includes/database.php';
           echo "<article class='product-card'>";
           echo    "<div class='product-image'>";
           echo      "<div class='product-image-inner'>";
-          echo        "<img src='img/" . $burger['image'] . "' alt='Product foto' style='width:100%;height:100%;object-fit:cover;' />";
+          echo          "<img src='img/" . $burger['image'] . "' alt='Product foto' style='width:100%;height:100%;object-fit:cover;' />";
           echo      "</div>";
+          if ($burger['pborange'] == 1) {
+              echo    "<span class='product-badge'>Favoriet</span>";
+          } else if ($burger['pbgreen'] == 1) {
+              echo    "<span class='product-badge badge-green'>Vegie</span>";
+          } else if ($burger['pbred'] == 1) {
+              echo    "<span class='badge-spicy product-badge'>Spicy</span>";
+          }
           echo    "</div>";
           echo    "<div class='product-body'>";
           echo      "<h3 class='product-name'>" . $burger['titel'] . "</h3>";
@@ -147,6 +152,13 @@ include_once 'includes/database.php';
           echo      "<div class='product-image-inner'>";
           echo        "<img src='img/" . $frietje['image'] . "' alt='Product foto' style='width:100%;height:100%;object-fit:cover;' />";
           echo      "</div>";
+          if ($frietje['pborange'] == 1) {
+              echo    "<span class='product-badge'>Favoriet</span>";
+          } else if ($frietje['pbgreen'] == 1) {
+              echo    "<span class='product-badge badge-green'>Vegie</span>";
+          } else if ($frietje['pbred'] == 1) {
+              echo    "<span class='badge-spicy product-badge'>Spicy</span>";
+          }
           echo    "</div>";
           echo    "<div class='product-body'>";
           echo      "<h3 class='product-name'>" . $frietje['titel'] . "</h3>";
@@ -188,6 +200,13 @@ include_once 'includes/database.php';
           echo      "<div class='product-image-inner'>";
           echo        "<img src='img/" . $schotel['image'] . "' alt='Product foto' style='width:100%;height:100%;object-fit:cover;' />";
           echo      "</div>";
+          if ($schotel['pborange'] == 1) {
+              echo    "<span class='product-badge'>Favoriet</span>";
+          } else if ($schotel['pbgreen'] == 1) {
+              echo    "<span class='product-badge badge-green'>Vegie</span>";
+          } else if ($schotel['pbred'] == 1) {
+              echo    "<span class='badge-spicy product-badge'>Spicy</span>";
+          }
           echo    "</div>";
           echo    "<div class='product-body'>";
           echo      "<h3 class='product-name'>" . $schotel['titel'] . "</h3>";
@@ -229,6 +248,13 @@ include_once 'includes/database.php';
           echo      "<div class='product-image-inner'>";
           echo        "<img src='img/" . $kapsalon['image'] . "' alt='Product foto' style='width:100%;height:100%;object-fit:cover;' />";
           echo      "</div>";
+          if ($kapsalon['pborange'] == 1) {
+              echo    "<span class='product-badge'>Favoriet</span>";
+          } else if ($kapsalon['pbgreen'] == 1) {
+              echo    "<span class='product-badge badge-green'>Vegie</span>";
+          } else if ($kapsalon['pbred'] == 1) {
+              echo    "<span class='badge-spicy product-badge'>Spicy</span>";
+          }
           echo    "</div>";
           echo    "<div class='product-body'>";
           echo      "<h3 class='product-name'>" . $kapsalon['titel'] . "</h3>";
@@ -270,6 +296,13 @@ include_once 'includes/database.php';
           echo      "<div class='product-image-inner'>";
           echo        "<img src='img/" . $durum['image'] . "' alt='Product foto' style='width:100%;height:100%;object-fit:cover;' />";
           echo      "</div>";
+          if ($durum['pborange'] == 1) {
+              echo    "<span class='product-badge'>Favoriet</span>";
+          } else if ($durum['pbgreen'] == 1) {
+              echo    "<span class='product-badge badge-green'>Vegie</span>";
+          } else if ($durum['pbred'] == 1) {
+              echo    "<span class='badge-spicy product-badge'>Spicy</span>";
+          }
           echo    "</div>";
           echo    "<div class='product-body'>";
           echo      "<h3 class='product-name'>" . $durum['titel'] . "</h3>";
@@ -311,6 +344,13 @@ include_once 'includes/database.php';
           echo      "<div class='product-image-inner'>";
           echo        "<img src='img/" . $snack['image'] . "' alt='Product foto' style='width:100%;height:100%;object-fit:cover;' />";
           echo      "</div>";
+          if ($snack['pborange'] == 1) {
+              echo    "<span class='product-badge'>Favoriet</span>";
+          } else if ($snack['pbgreen'] == 1) {
+              echo    "<span class='product-badge badge-green'>Vegie</span>";
+          } else if ($snack['pbred'] == 1) {
+              echo    "<span class='badge-spicy product-badge'>Spicy</span>";
+          }
           echo    "</div>";
           echo    "<div class='product-body'>";
           echo      "<h3 class='product-name'>" . $snack['titel'] . "</h3>";
@@ -352,6 +392,13 @@ include_once 'includes/database.php';
           echo      "<div class='product-image-inner'>";
           echo        "<img src='img/" . $drankje['image'] . "' alt='Product foto' style='width:100%;height:100%;object-fit:cover;' />";
           echo      "</div>";
+          if ($drankje['pborange'] == 1) {
+              echo    "<span class='product-badge'>Favoriet</span>";
+          } else if ($drankje['pbgreen'] == 1) {
+              echo    "<span class='product-badge badge-green'>Vegie</span>";
+          } else if ($drankje['pbred'] == 1) {
+              echo    "<span class='badge-spicy product-badge'>Spicy</span>";
+          }
           echo    "</div>";
           echo    "<div class='product-body'>";
           echo      "<h3 class='product-name'>" . $drankje['titel'] . "</h3>";

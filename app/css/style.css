@@ -22,6 +22,8 @@
   /* Iets donkerder crème: randen en velden            */
   --text-muted: #7A8078;
   /* Gedempte grijsgroene kleur: beschrijvingsteksten  */
+  --spicy-red: #dc1010;
+   /* Fel rood voor pittige gerechten */
 }
 
 html {
@@ -428,6 +430,20 @@ body {
 /* Variant: groene badge voor vegan/vegetarische opties */
 .badge-green {
   background: var(--green-deep);
+}
+
+.badge-spicy {
+  background: var(--spicy-red);
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  color: var(--cream);
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 99px;
 }
 
 /* Onderste helft van de kaart: naam, beschrijving, prijs en knop */
