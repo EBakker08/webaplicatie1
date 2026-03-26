@@ -39,8 +39,8 @@ include_once 'includes/database.php';
     <div class="hero-bg"></div>
 
     <div class="hero-actions">
-      <button class="hero-btn" id="adminBtn">⚙ Admin</button>
-      <button class="hero-btn" id="loginBtn">Inloggen</button>
+      <button class="hero-btn">⚙ Admin</button>
+      <button class="hero-btn">Inloggen</button>
     </div>
 
     <!-- Gecentreerd logo: oranje blokje + naam + tagline -->

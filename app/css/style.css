@@ -67,10 +67,30 @@ body {
   transition: background .2s, border-color .2s, color .2s;
 }
 
+.hero-btn2 {
+  padding: 9px 22px;
+  border: 1.5px solid rgba(255, 252, 247, 0.3);
+  border-radius: 99px;
+  background: var(--cream-dark);
+  color: var(--charcoal);
+  font-family: inherit;
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s;
+}
+
 /* Login/Uitloggen knop hover: oranje */
 .hero-btn:hover {
   background: var(--orange);
   border-color: var(--orange);
+}
+
+.hero-btn2:hover {
+  background: var(--green-deep);
+  border-color: var(--green-mid);
+  color: var(--cream);
 }
 
 /* Admin-knop krijgt groene kleur als je ingelogd bent als admin */
@@ -234,7 +254,7 @@ body {
 
 /* Het tekstveld voor zoeken */
 .search-wrap input {
-  width: 100%;
+  width: auto;
   padding: 10px 16px 10px 42px;
   /* Links ruimte voor het icoon */
   border: 1.5px solid var(--cream-dark);
@@ -245,6 +265,7 @@ body {
   color: var(--charcoal);
   outline: none;
   transition: border-color .2s, box-shadow .2s;
+  flex: 1;
 }
 
 .search-wrap input::placeholder {
@@ -256,6 +277,11 @@ body {
   border-color: var(--green-mid);
   box-shadow: 0 0 0 3px rgba(137, 184, 61, 0.15);
   background: #fff;
+}
+
+.search-wrap form {
+  display: flex;
+  gap: 10px;
 }
 
 /* Het vergrootglas-icoon links in het zoekveld */
