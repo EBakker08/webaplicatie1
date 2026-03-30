@@ -23,9 +23,10 @@ if ($zoekopdracht == '') {
     $statement = $pdo->prepare($sql);
     $statement->execute();
 } else {
-    $sql = "SELECT * FROM gerechten WHERE titel LIKE ? OR beschrijving LIKE ?";
+    $sql = "SELECT * FROM gerechten WHERE titel LIKE ? OR beschrijving LIKE ? OR type LIKE ?";
     $statement = $pdo->prepare($sql);
     $statement->execute([
+        '%' . $zoekopdracht . '%',
         '%' . $zoekopdracht . '%',
         '%' . $zoekopdracht . '%'
     ]);

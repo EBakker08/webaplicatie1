@@ -64,13 +64,12 @@ include_once 'includes/database.php';
 
     </div>
 
-
     <!-- Categorie-filterknopjes -->
-    <div class="cat-scroll" role="list">
-      <button class="cat-btn active" data-cat="all">Alles</button>
+    <div class="cat-scroll">
+      <button class="cat-btn active">Alles</button>
       <button class="cat-btn">Burgers</button>
       <button class="cat-btn">Loaded Fries</button>
-      <button class="cat-btn">Kebab</button>
+      <button class="cat-btn">Schotels</button>
       <button class="cat-btn">Kapsalon</button>
       <button class="cat-btn">Durum</button>
       <button class="cat-btn">Snacks</button>
@@ -89,20 +88,22 @@ include_once 'includes/database.php';
     } else {
       echo "<div class='product-grid'>";
       foreach ($menuItems as $item) {
-        echo "<article class='product-card'>";
-        echo    "<div class='product-image'>";
-        echo      "<div class='product-image-inner'>";
-        echo          "<img src='img/" . $item['image'] . "' alt='Product foto' style='width:100%;height:100%;object-fit:cover;' />";
-        echo      "</div>";
-        echo    "</div>";
-        echo    "<div class='product-body'>";
-        echo      "<h3 class='product-name'>" . $item['titel'] . "</h3>";
-        echo      "<p class='product-desc'>" . $item['beschrijving'] . "</p>";
-        echo      "<div class='product-footer'>";
-        echo        "<span class='product-price'>€ " . $item['prijs'] . "</span>";
-        echo      "</div>";
-        echo    "</div>";
-        echo "</article>";
+        echo "<div class='product-grid'>";
+        echo  "<article class='product-card'>";
+        echo     "<div class='product-image'>";
+        echo       "<div class='product-image-inner'>";
+        echo           "<img src='img/" . $item['image'] . "' alt='Product foto' style='width:100%;height:100%;object-fit:cover;' />";
+        echo       "</div>";
+        echo     "</div>";
+        echo     "<div class='product-body'>";
+        echo       "<h3 class='product-name'>" . $item['titel'] . "</h3>";
+        echo       "<p class='product-desc'>" . $item['beschrijving'] . "</p>";
+        echo       "<div class='product-footer'>";
+        echo         "<span class='product-price'>€ " . $item['prijs'] . "</span>";
+        echo       "</div>";
+        echo     "</div>";
+        echo  "</article>";
+        echo "</div>";
       }
       echo "</div>";
     }
@@ -117,8 +118,6 @@ include_once 'includes/database.php';
 
       <!-- ── BURGERS ─────────────────────────────────────────── -->
       <div class="category-block" data-section="burgers">
-        <h2 class="category-title">Burgers</h2>
-        <div class="product-grid">
 
         <?php
         
@@ -132,6 +131,18 @@ include_once 'includes/database.php';
         $statement->execute();
 
         $burgers = $statement->fetchAll();
+
+        if ($burgers == []) {
+
+        } else {
+          echo "<h2 class='category-title'>Burgers</h2>";
+        }
+
+        ?>
+
+        <div class="product-grid">
+
+        <?php
 
         foreach($burgers as $burger) {
           echo "<article class='product-card'>";
@@ -164,9 +175,7 @@ include_once 'includes/database.php';
 
       <!-- ── LOADED FRIES ─────────────────────────────────────── -->
       <div class="category-block" data-section="fries">
-        <h2 class="category-title">Loaded Fries</h2>
-        <div class="product-grid">
-
+        
         <?php
         
         //  Define SQL statement
@@ -179,6 +188,18 @@ include_once 'includes/database.php';
         $statement->execute();
 
         $friet = $statement->fetchAll();
+
+        if ($friet == []) {
+
+        } else {
+          echo "<h2 class='category-title'>Loaded Fries</h2>";
+        }
+
+        ?>
+
+        <div class="product-grid">
+
+        <?php
 
         foreach($friet as $frietje) {
           echo "<article class='product-card'>";
@@ -210,9 +231,7 @@ include_once 'includes/database.php';
       </div>
 
       <!-- ── KEBAB & SHOARMA ──────────────────────────────────── -->
-      <div class="category-block" data-section="kebab">
-        <h2 class="category-title">Schotels</h2>
-        <div class="product-grid">
+      <div class="category-block">
 
         <?php
         
@@ -226,6 +245,18 @@ include_once 'includes/database.php';
         $statement->execute();
 
         $schotels = $statement->fetchAll();
+
+        if ($schotels == []) {
+
+        } else {
+          echo "<h2 class='category-title'>Schotels</h2>";
+        }
+
+        ?>
+
+        <div class="product-grid">
+
+        <?php
 
         foreach($schotels as $schotel) {
           echo "<article class='product-card'>";
@@ -258,8 +289,6 @@ include_once 'includes/database.php';
 
       <!-- ── KAPSALON ─────────────────────────────────────────── -->
       <div class="category-block" data-section="kapsalon">
-        <h2 class="category-title">Kapsalon</h2>
-        <div class="product-grid">
 
         <?php
         
@@ -273,6 +302,18 @@ include_once 'includes/database.php';
         $statement->execute();
 
         $kapsalons = $statement->fetchAll();
+        
+        if ($kapsalons == []) {
+
+        } else {
+          echo "<h2 class='category-title'>Kapsalon</h2>";
+        }
+        
+        ?>
+
+        <div class="product-grid">
+
+        <?php
 
         foreach($kapsalons as $kapsalon) {
           echo "<article class='product-card'>";
@@ -305,8 +346,6 @@ include_once 'includes/database.php';
 
       <!-- ── DURUM ────────────────────────────────────────────── -->
       <div class="category-block" data-section="durum">
-        <h2 class="category-title">Durum</h2>
-        <div class="product-grid">
 
         <?php
         
@@ -320,6 +359,18 @@ include_once 'includes/database.php';
         $statement->execute();
 
         $durums = $statement->fetchAll();
+        
+        if ($durums == []) {
+
+        } else {
+          echo "<h2 class='category-title'>Durums</h2>";
+        }
+        
+        ?>
+
+        <div class="product-grid">
+
+        <?php
 
         foreach($durums as $durum) {
           echo "<article class='product-card'>";
@@ -352,9 +403,7 @@ include_once 'includes/database.php';
 
       <!-- ── SNACKS ───────────────────────────────────────────── -->
       <div class="category-block" data-section="snacks">
-        <h2 class="category-title">Snacks</h2>
-        <div class="product-grid">
-
+        
         <?php
         
         //  Define SQL statement
@@ -367,6 +416,18 @@ include_once 'includes/database.php';
         $statement->execute();
 
         $snacks = $statement->fetchAll();
+        
+        if ($snacks == []) {
+
+        } else {
+          echo "<h2 class='category-title'>Snacks</h2>";
+        }
+        
+        ?>
+
+        <div class="product-grid">
+
+        <?php
 
         foreach($snacks as $snack) {
           echo "<article class='product-card'>";
@@ -399,11 +460,9 @@ include_once 'includes/database.php';
 
       <!-- ── DRANKEN ──────────────────────────────────────────── -->
       <div class="category-block" data-section="drinks">
-        <h2 class="category-title">Dranken</h2>
-        <div class="product-grid">
-
+        
         <?php
-
+        
         //  Define SQL statement
         $sql = "SELECT * FROM gerechten WHERE type = 'drankjes'";
 
@@ -414,6 +473,18 @@ include_once 'includes/database.php';
         $statement->execute();
 
         $drankjes = $statement->fetchAll();
+        
+        if ($drankjes == []) {
+
+        } else {
+          echo "<h2 class='category-title'>Dranken</h2>";
+        }
+        
+        ?>
+
+        <div class="product-grid">
+
+        <?php
 
         foreach($drankjes as $drankje) {
           echo "<article class='product-card'>";
