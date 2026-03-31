@@ -40,8 +40,8 @@ include_once 'includes/database.php';
     <div class="hero-bg"></div>
 
     <div class="hero-actions">
-      <button class="hero-btn">⚙ Admin</button>  <!-- Verander straks naar in if statement. -->
-      <button class="hero-btn">Inloggen</button>  <!-- Verander straks naar in if statement. -->
+      <a href="http://localhost:8000/admin.php" class="hero-btn">⚙ Admin</a>  <!-- Verander straks naar in if statement. -->
+      <a href="http://localhost:8000/inlog.php" class="hero-btn">Inloggen</a>  <!-- Verander straks naar in if statement. -->
     </div>
 
     <!-- Gecentreerd logo: oranje blokje + naam + tagline -->

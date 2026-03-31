@@ -40,7 +40,7 @@ include_once 'includes/database.php';
     <div class="hero-bg"></div>
 
     <div class="hero-actions">
-      <button class="hero-btn" href="index.php">Home</button>
+      <a href="http://localhost:8000/" class="hero-btn">Home</a>
     </div>
 
     <div class="logo">
@@ -50,35 +50,11 @@ include_once 'includes/database.php';
     </div>
   </header>
 
-  <!-- ======= INLOG KAART ======= -->
-  <div class="inlog-wrapper">
-    <div class="inlog-card">
+  <?php
+  
+  include_once 'includes/inloggen.php';
 
-      <!-- Logo -->
-      <div class="inlog-logo">ST</div>
-
-      <h1 class="inlog-title">Welkom</h1>
-      <p class="inlog-sub">Log in op uw STRAAT account</p>
-
-      <!-- Inlogformulier -->
-      <form class="inlog-form" action="login.php" method="POST">
-
-        <div class="form-group">
-          <label for="email">E-mailadres</label>
-          <input type="email" id="email" name="email" placeholder="jouw@email.nl" autocomplete="email" required />
-        </div>
-
-        <div class="form-group">
-          <label for="wachtwoord">Wachtwoord</label>
-          <input type="password" id="wachtwoord" name="wachtwoord" placeholder="••••••••" autocomplete="current-password" required />
-        </div>
-
-        <button type="submit" class="inlog-btn">Inloggen</button>
-
-      </form>
-
-    </div>
-  </div>
+  ?>
 
   <!-- ======= FOOTER ======= -->
   <footer class="site-footer">

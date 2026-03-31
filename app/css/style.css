@@ -65,6 +65,8 @@ body {
   letter-spacing: 0.5px;
   cursor: pointer;
   transition: background .2s, border-color .2s, color .2s;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .hero-btn2 {
@@ -79,6 +81,8 @@ body {
   letter-spacing: 0.5px;
   cursor: pointer;
   transition: background .2s, border-color .2s, color .2s;
+  text-decoration: none;
+  display: inline-block;
 }
 
 /* Login/Uitloggen knop hover: oranje */
