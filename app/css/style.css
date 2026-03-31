@@ -1554,3 +1554,635 @@ body {
 .admin-new-confirm:hover {
   background: #4a7028;
 }
+
+
+
+/* =========================================================================================================== */
+/* inlog.php */
+/* =========================================================================================================== */
+/* Centreert de kaart verticaal in de ruimte tussen header en footer */
+.inlog-wrapper {
+  min-height: calc(100vh - 260px - 90px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+}
+
+/* De witte inlogkaart */
+.inlog-card {
+  background: #fff;
+  border: 1px solid var(--cream-dark);
+  border-radius: 24px;
+  padding: 44px 40px 36px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 8px 40px rgba(49,53,52,0.08);
+}
+
+/* Oranje gekanteld logo-blokje bovenin */
+.inlog-logo {
+  width: 52px;
+  height: 52px;
+  background: var(--orange);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--cream);
+  letter-spacing: -1px;
+  transform: rotate(-4deg);
+  margin-bottom: 22px;
+}
+
+.inlog-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--charcoal);
+  margin-bottom: 6px;
+}
+
+.inlog-sub {
+  font-size: .85rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+/* CSS-only rol-toggle via verborgen radio-knoppen.
+    De labels fungeren als de zichtbare knoppen.
+    De radio-inputs zijn verborgen maar sturen de :checked stijl. */
+.inlog-toggle {
+  display: flex;
+  background: var(--cream-dark);
+  border-radius: 99px;
+  padding: 4px;
+  margin-bottom: 24px;
+  gap: 0;
+}
+
+/* Verberg de radio-inputs zelf volledig */
+.inlog-toggle input[type="radio"] {
+  display: none;
+}
+
+/* De labels zijn de zichtbare pill-knoppen */
+.inlog-toggle label {
+  flex: 1;
+  text-align: center;
+  padding: 8px 16px;
+  border-radius: 99px;
+  font-family: inherit;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background .2s, color .2s, box-shadow .2s;
+  user-select: none;
+}
+
+/* Als het bijbehorende radio-input checked is → actieve stijl */
+.inlog-toggle input[type="radio"]:checked + label {
+  background: #fff;
+  color: var(--charcoal);
+  box-shadow: 0 2px 8px rgba(49,53,52,0.12);
+}
+
+/* Formulier */
+.inlog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.inlog-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inlog-form label {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--charcoal);
+}
+
+.inlog-form input[type="email"],
+.inlog-form input[type="password"],
+.inlog-form input[type="text"] {
+  padding: 12px 16px;
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 10px;
+  background: var(--cream);
+  font-family: inherit;
+  font-size: .9rem;
+  color: var(--charcoal);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  width: 100%;
+}
+
+.inlog-form input:focus {
+  border-color: var(--green-mid);
+  box-shadow: 0 0 0 3px rgba(137,184,61,0.15);
+}
+
+.inlog-form input::placeholder {
+  color: var(--text-muted);
+}
+
+.forgot-link {
+  font-size: .8rem;
+  color: var(--green-deep);
+  text-decoration: none;
+  align-self: flex-end;
+  margin-top: -6px;
+  font-weight: 600;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+/* Grote inlogknop onderaan het formulier */
+.inlog-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--charcoal);
+  color: var(--cream);
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: background .2s, transform .15s;
+}
+
+.inlog-btn:hover {
+  background: var(--orange);
+  transform: translateY(-1px);
+}
+
+.inlog-btn:active {
+  transform: translateY(0);
+}
+
+/* Link naar registratie onderaan de kaart */
+.inlog-register {
+  text-align: center;
+  font-size: .82rem;
+  color: var(--text-muted);
+  margin-top: 20px;
+}
+
+.inlog-register a {
+  color: var(--green-deep);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.inlog-register a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 500px) {
+  .inlog-card {
+    padding: 32px 24px 28px;
+  }
+}
+
+
+/* ===================================================================================================================== */
+/* admin.php */
+/* ===================================================================================================================== */
+
+/* ── PAGINA WRAPPER ───────────────────────────────────────── */
+.admin-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+}
+
+.admin-page-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+.admin-page-logo {
+  width: 44px;
+  height: 44px;
+  background: var(--green-deep);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .85rem;
+  font-weight: 900;
+  color: var(--cream);
+  letter-spacing: -1px;
+  transform: rotate(-4deg);
+  flex-shrink: 0;
+}
+
+.admin-page-title {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--charcoal);
+}
+
+.admin-page-sub {
+  font-size: .85rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* ── CSS-ONLY TABS ────────────────────────────────────────────
+    Drie verborgen radio-inputs sturen via :checked welke
+    tab-label actief is en welke tab-content zichtbaar is.
+    Geen JavaScript nodig. */
+
+.tab-radio { display: none; }
+
+.tab-bar {
+  display: flex;
+  border-bottom: 2px solid var(--cream-dark);
+  margin-bottom: 36px;
+}
+
+.tab-bar label {
+  padding: 12px 28px;
+  font-size: .85rem;
+  font-weight: 700;
+  letter-spacing: .5px;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color .15s;
+  user-select: none;
+}
+
+.tab-bar label:hover { color: var(--charcoal); }
+
+/* Actieve tab krijgt donkere onderrand */
+#tab-toevoegen:checked  ~ .tab-bar label[for="tab-toevoegen"],
+#tab-aanpassen:checked  ~ .tab-bar label[for="tab-aanpassen"],
+#tab-verwijderen:checked ~ .tab-bar label[for="tab-verwijderen"] {
+  color: var(--charcoal);
+  border-bottom-color: var(--charcoal);
+}
+
+/* Alle tab-panels verborgen */
+.tab-content { display: none; }
+
+/* Alleen de actieve tab-panel zichtbaar */
+#tab-toevoegen:checked  ~ .tab-panels #content-toevoegen,
+#tab-aanpassen:checked  ~ .tab-panels #content-aanpassen,
+#tab-verwijderen:checked ~ .tab-panels #content-verwijderen {
+  display: block;
+}
+
+/* ── GEDEELDE FORMULIER-STIJLEN ───────────────────────────── */
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-section-title {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.admin-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-form label {
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--charcoal);
+}
+
+.admin-form input[type="text"],
+.admin-form input[type="number"],
+.admin-form input[type="file"],
+.admin-form textarea,
+.admin-form select {
+  padding: 11px 14px;
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 10px;
+  background: #fff;
+  font-family: inherit;
+  font-size: .9rem;
+  color: var(--charcoal);
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  width: 100%;
+}
+
+.admin-form input:focus,
+.admin-form textarea:focus,
+.admin-form select:focus {
+  border-color: var(--green-mid);
+  box-shadow: 0 0 0 3px rgba(137,184,61,0.15);
+}
+
+.admin-form input::placeholder,
+.admin-form textarea::placeholder { color: var(--text-muted); }
+
+.admin-form textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.badge-options {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.badge-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--charcoal);
+  cursor: pointer;
+}
+
+.badge-option input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--green-deep);
+  cursor: pointer;
+}
+
+.form-divider {
+  border: none;
+  border-top: 1px solid var(--cream-dark);
+  margin: 4px 0;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.btn-primary {
+  padding: 13px 28px;
+  background: var(--charcoal);
+  color: var(--cream);
+  border: none;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .2s, transform .15s;
+}
+
+.btn-primary:hover { background: var(--green-deep); transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+
+.btn-secondary {
+  padding: 13px 24px;
+  background: transparent;
+  color: var(--text-muted);
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: .9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: border-color .2s, color .2s;
+}
+
+.btn-secondary:hover { border-color: var(--charcoal); color: var(--charcoal); }
+
+/* ── TAB AANPASSEN: TABEL ─────────────────────────────────── */
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .85rem;
+}
+
+.product-table th {
+  text-align: left;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0 12px 12px 0;
+  border-bottom: 2px solid var(--cream-dark);
+}
+
+.product-table td {
+  padding: 14px 12px 14px 0;
+  border-bottom: 1px solid var(--cream-dark);
+  vertical-align: middle;
+  color: var(--charcoal);
+}
+
+.product-table tr:last-child td { border-bottom: none; }
+
+.tabel-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: var(--cream-dark);
+  object-fit: cover;
+}
+
+.tabel-naam { font-weight: 700; }
+
+.tabel-desc {
+  color: var(--text-muted);
+  font-size: .78rem;
+  margin-top: 2px;
+}
+
+.tabel-prijs { font-weight: 700; white-space: nowrap; }
+
+.tabel-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 99px;
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background: var(--orange);
+  color: var(--cream);
+}
+
+.tabel-badge.groen { background: var(--green-deep); }
+.tabel-badge.rood  { background: var(--spicy-red); }
+
+/* Bewerk-knop in de tabel */
+.btn-edit {
+  padding: 6px 16px;
+  background: var(--cream-dark);
+  border: none;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: .78rem;
+  font-weight: 700;
+  color: var(--charcoal);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  white-space: nowrap;
+  transition: background .15s;
+}
+
+.btn-edit:hover { background: var(--charcoal); color: var(--cream); }
+
+/* Inline bewerkformulier — verborgen tenzij aangewezen via :target */
+.edit-form-row { display: none; background: var(--cream); }
+.edit-form-row:target { display: table-row; }
+
+.edit-form-row td {
+  padding: 16px 0 16px 0;
+  border-bottom: 2px solid var(--cream-dark);
+}
+
+.edit-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.edit-inner input[type="text"],
+.edit-inner input[type="number"],
+.edit-inner textarea,
+.edit-inner select {
+  padding: 9px 12px;
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 8px;
+  background: #fff;
+  font-family: inherit;
+  font-size: .85rem;
+  color: var(--charcoal);
+  outline: none;
+  transition: border-color .2s;
+  width: 100%;
+}
+
+.edit-inner input:focus,
+.edit-inner textarea:focus,
+.edit-inner select:focus { border-color: var(--green-mid); }
+
+/* ── TAB VERWIJDEREN: KAARTEN ─────────────────────────────── */
+.delete-warning {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff8f7;
+  border: 1.5px solid #f5b7b1;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: .85rem;
+  color: #c0392b;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.delete-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.delete-card {
+  background: #fff;
+  border: 1px solid var(--cream-dark);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow .2s;
+}
+
+.delete-card:hover { box-shadow: 0 6px 24px rgba(49,53,52,0.08); }
+
+.delete-card-img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  background: var(--cream-dark);
+  display: block;
+}
+
+.delete-card-body {
+  padding: 14px 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.delete-card-name { font-size: .95rem; font-weight: 700; color: var(--charcoal); }
+
+.delete-card-cat {
+  font-size: .75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.delete-card-price { font-size: 1rem; font-weight: 700; color: var(--charcoal); margin-top: 6px; }
+
+.delete-card-footer { padding: 0 16px 16px; }
+
+.btn-danger-full {
+  width: 100%;
+  padding: 10px;
+  background: #fde8e4;
+  color: #c0392b;
+  border: 1.5px solid #f5b7b1;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: .82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .2s;
+}
+
+.btn-danger-full:hover { background: #f5b7b1; }
+
+@media (max-width: 600px) {
+  .admin-page { padding: 32px 16px 60px; }
+  .tab-bar label { padding: 10px 16px; font-size: .78rem; }
+  .form-row { grid-template-columns: 1fr; }
+}

@@ -21,12 +21,13 @@ include_once 'includes/database.php';
 ?>
 
 <!DOCTYPE html>
+
 <html lang="nl">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>STRAAT | Arnhem</title>
+  <title>Home | STRAAT</title>
   <link rel="icon" href="img/logo.png" type="image/png" alt="STRAAT logo">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css">
@@ -39,8 +40,8 @@ include_once 'includes/database.php';
     <div class="hero-bg"></div>
 
     <div class="hero-actions">
-      <button class="hero-btn">⚙ Admin</button>
-      <button class="hero-btn">Inloggen</button>
+      <button class="hero-btn">⚙ Admin</button>  <!-- Verander straks naar in if statement. -->
+      <button class="hero-btn">Inloggen</button>  <!-- Verander straks naar in if statement. -->
     </div>
 
     <!-- Gecentreerd logo: oranje blokje + naam + tagline -->
@@ -62,18 +63,6 @@ include_once 'includes/database.php';
 
       ?>
 
-    </div>
-
-    <!-- Categorie-filterknopjes -->
-    <div class="cat-scroll">
-      <button class="cat-btn active">Alles</button>
-      <button class="cat-btn">Burgers</button>
-      <button class="cat-btn">Loaded Fries</button>
-      <button class="cat-btn">Schotels</button>
-      <button class="cat-btn">Kapsalon</button>
-      <button class="cat-btn">Durum</button>
-      <button class="cat-btn">Snacks</button>
-      <button class="cat-btn">Dranken</button>
     </div>
 
   </nav>
@@ -117,7 +106,7 @@ include_once 'includes/database.php';
     <section class="menu-section" aria-label="Menu">
 
       <!-- ── BURGERS ─────────────────────────────────────────── -->
-      <div class="category-block" data-section="burgers">
+      <div class="category-block">
 
         <?php
         
@@ -174,7 +163,7 @@ include_once 'includes/database.php';
       </div>
 
       <!-- ── LOADED FRIES ─────────────────────────────────────── -->
-      <div class="category-block" data-section="fries">
+      <div class="category-block">
         
         <?php
         
@@ -288,7 +277,7 @@ include_once 'includes/database.php';
       </div>
 
       <!-- ── KAPSALON ─────────────────────────────────────────── -->
-      <div class="category-block" data-section="kapsalon">
+      <div class="category-block">
 
         <?php
         
@@ -345,7 +334,7 @@ include_once 'includes/database.php';
       </div>
 
       <!-- ── DURUM ────────────────────────────────────────────── -->
-      <div class="category-block" data-section="durum">
+      <div class="category-block">
 
         <?php
         
@@ -402,7 +391,7 @@ include_once 'includes/database.php';
       </div>
 
       <!-- ── SNACKS ───────────────────────────────────────────── -->
-      <div class="category-block" data-section="snacks">
+      <div class="category-block">
         
         <?php
         
@@ -459,7 +448,7 @@ include_once 'includes/database.php';
       </div>
 
       <!-- ── DRANKEN ──────────────────────────────────────────── -->
-      <div class="category-block" data-section="drinks">
+      <div class="category-block">
         
         <?php
         
