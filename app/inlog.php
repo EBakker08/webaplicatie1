@@ -1,22 +1,8 @@
+<?php 
 
-<?php
+session_start();
 
-include_once 'includes/database.php';
-
-// //  Define SQL statement
-// $sql = "SELECT * FROM gerechten";
-
-// //  Prepare SQL statement
-// $statement = $pdo->prepare($sql);
-
-// //  Exacute SQL statement
-// $statement->execute();
-
-// $gerechten = $statement->fetchAll();
-
-// echo "<pre>";
-// print_r($gerechten);
-// echo "</pre>";
+include_once 'includes/inloggen.php';
 
 ?>
 
@@ -36,25 +22,11 @@ include_once 'includes/database.php';
 <body>
 
   <!-- ======= HEADER ======= -->
-  <header class="hero" role="banner">
-    <div class="hero-bg"></div>
-
+  <header>
     <div class="hero-actions">
-      <a href="http://localhost:8000/" class="hero-btn">Home</a>
-    </div>
-
-    <div class="logo">
-      <div class="logo-mark">ST</div>
-      <div class="logo-name">STRAAT</div>
-      <div class="logo-tagline">Streetfood — Arnhem</div>
+      <a href="http://localhost:8000/index.php" class="hero-btn2">Home</a>
     </div>
   </header>
-
-  <?php
-  
-  include_once 'includes/inloggen.php';
-
-  ?>
 
   <!-- ======= FOOTER ======= -->
   <footer class="site-footer">
@@ -73,4 +45,5 @@ include_once 'includes/database.php';
   </footer>
 
 </body>
+
 </html>

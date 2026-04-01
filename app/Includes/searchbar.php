@@ -1,4 +1,3 @@
-
 <?php
 
 $zoekopdracht = $_POST['zoekopdracht'] ?? '';
