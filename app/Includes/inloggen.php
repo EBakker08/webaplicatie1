@@ -25,29 +25,29 @@ $fout_ww = "";
 
 if (isset($_POST['inloggen'])) {
 
-    $email     = trim($_POST['email']);
+    $email = trim($_POST['email']);
     $wachtwoord = $_POST['wachtwoord'];
 
-    // ── Zoek gebruiker op e-mail ─────────────────────────────────────
-    $stmt = $pdo->prepare("SELECT * FROM users WHERE mail = :mail LIMIT 1");
-    $stmt->execute([':mail' => $email]);
-    $gebruiker = $stmt->fetch(PDO::FETCH_ASSOC);
+    // Zoek gebruiker op e-mail
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE mail = :mail LIMIT 1");    // Bereid SQL statement voor
+    $stmt->execute([':mail' => $email]);    // Voer SQL statement uit met de opgegeven e-mail
+    $gebruiker = $stmt->fetch(PDO::FETCH_ASSOC);    // Haal de gebruiker op als er een match is
 
-    // ── Controleer e-mail en wachtwoord ──────────────────────────────
-    if (!$gebruiker) {
-        $fout_email = "Onbekend e-mailadres.";
-    } elseif ($gebruiker['ww'] !== $wachtwoord) {
-        $fout_ww = "Verkeerd wachtwoord.";
-    } else {
-        // ── Inloggen gelukt: sla sessie op ──────────────────────────
+    // Controleer e-mail en wachtwoord
+    if (!$gebruiker) {  // Als er email fout is, of niet in de database staat...
+        $fout_email = "❗Onbekend e-mailadres.";    // Verander fout_email naar deze foutmelding
+    } else if ($gebruiker['ww'] !== $wachtwoord) {  // Als de gebruiker goed is maar het wachtwoord is fout...
+        $fout_ww = "❗Verkeerd wachtwoord.";    // Verander fout_ww naar deze foutmelding
+    } else {    // Anders sla de gegevens op
+        // Als inloggen gelukt is, sla de gegevens op in de session
         $_SESSION['gebruiker_id'] = $gebruiker['id'];
         $_SESSION['email']        = $gebruiker['mail'];
         $_SESSION['isAdmin']      = $gebruiker['isAdmin'];
 
-        // ── Stuur door op basis van rol ──────────────────────────────
-        if ($gebruiker['isAdmin'] == 1) {
+        // Stuur door op basis van rol
+        if ($gebruiker['isAdmin'] == 1) {   // Als de gebruiker een admin is, stuur de gebruiker door naar de admin page
             header("Location: http://localhost:8000/admin.php");
-        } else {
+        } else {    //  Anders stuur de gebruiker door naar de home page
             header("Location: http://localhost:8000/index.php");
         }
         exit();
@@ -72,8 +72,8 @@ if (isset($_POST['inloggen'])) {
                 <label for="email">Mailadres</label>
                 <input type="email" name="email" id="email" placeholder="jouw@email.nl" value="<?php echo htmlspecialchars($_POST['email'] ?? ''); ?>" required />
                 <?php
-                if ($fout_email) {
-                    echo "<span class='fout-melding'>";
+                if ($fout_email) {  // Als de email niet gevonden is of fout is, laat de foutmelding zien
+                    echo "<span class='delete-warning'>";
                     echo $fout_email;
                     echo "</span>";
                 }
@@ -84,8 +84,8 @@ if (isset($_POST['inloggen'])) {
                 <label for="wachtwoord">Wachtwoord</label>
                 <input type="password" name="wachtwoord" id="wachtwoord" placeholder="Wachtwoord123!" required />
                 <?php
-                if ($fout_ww) {
-                    echo "<span class='fout-melding'>";
+                if ($fout_ww) { // Als het wachtwoord niet gevonden is of fout is, laat de foutmelding zien
+                    echo "<span class='delete-warning'>";
                     echo $fout_ww;
                     echo "</span>";
                 }

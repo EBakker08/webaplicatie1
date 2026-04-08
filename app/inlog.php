@@ -1,8 +1,8 @@
 <?php 
 
-session_start();
+session_start();  // Start session, zodat inlog gegevens worden onthouden
 
-include_once 'includes/inloggen.php';
+include_once 'includes/inloggen.php'; // Include inloggen.php waar alles voor inloggen in staat
 
 ?>
 

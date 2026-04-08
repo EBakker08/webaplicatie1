@@ -15,14 +15,14 @@ $zoekopdracht = $_POST['zoekopdracht'] ?? '';
 
 <?php
 
-$zoekopdracht = $_POST['zoekopdracht'] ?? '';
+$zoekopdracht = $_POST['zoekopdracht'] ?? '';   // 
 
-if ($zoekopdracht == '') {
+if ($zoekopdracht == '') {  // Als er geen zoekopdracht is laat dan alle gerechten zien
     $sql = "SELECT * FROM gerechten";
     $statement = $pdo->prepare($sql);
     $statement->execute();
-} else {
-    $sql = "SELECT * FROM gerechten WHERE titel LIKE ? OR beschrijving LIKE ? OR type LIKE ?";
+} else {    // Als er een zoekopdracht is, zoek dan naar gerechten die overeenkomen met de zoekopdracht die opgegeven is
+    $sql = "SELECT * FROM gerechten WHERE titel LIKE ? OR beschrijving LIKE ? OR type LIKE ?";  // Kijk of het voorkomt in de titel, beschrijving of als type
     $statement = $pdo->prepare($sql);
     $statement->execute([
         '%' . $zoekopdracht . '%',

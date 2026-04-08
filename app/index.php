@@ -1,7 +1,7 @@
 <?php
-session_start();
+session_start();  // Start session
 
-if (!isset($_SESSION['gebruiker_id'])) {
+if (!isset($_SESSION['gebruiker_id'])) {  // Als er geen gebruiker is ingelogd, stuur door naar inlog page en stop verdere uitvoering van de pagina
     header("Location: /inlog.php");
     exit();
 }
@@ -9,8 +9,9 @@ if (!isset($_SESSION['gebruiker_id'])) {
 
 <?php
 
-include_once 'includes/database.php';
+include_once 'includes/database.php'; // Include connectie naar database
 
+// Database connection check naar gerechten
 // //  Define SQL statement
 // $sql = "SELECT * FROM gerechten";
 
@@ -50,17 +51,17 @@ include_once 'includes/database.php';
     <div class="hero-actions">
       <?php
       
-      if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == true) {
-        echo "<a href='http://localhost:8000/admin.php' class='hero-btn is-admin'>⚙ Admin</a>";
-        if (isset($_SESSION['gebruiker_id'])) {
+      if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == true) {  // Check of gebruiker als admin is ingelogd
+        echo "<a href='http://localhost:8000/admin.php' class='hero-btn is-admin'>⚙ Admin</a>";  // Als admin is ingelogd, show 'admin' button
+        if (isset($_SESSION['gebruiker_id'])) { // Als er is ingelogd als admin, show 'uitloggen' button
             echo "<a href='http://localhost:8000/uitloggen.php' class='hero-btn'>Uitloggen</a>";
-        } else {
+        } else {  // Als er niet is ingelogd, show 'inloggen' button
             echo "<a href='http://localhost:8000/inlog.php' class='hero-btn'>Inloggen</a>";
         }
-      } else {
-        if (isset($_SESSION['gebruiker_id'])) {
+      } else {  // Anders als er is ingelogd als user...
+        if (isset($_SESSION['gebruiker_id'])) { // show 'uitloggen' button
             echo "<a href='http://localhost:8000/uitloggen.php' class='hero-btn'>Uitloggen</a>";
-        } else {
+        } else {  // Als er niet is ingelogd, show 'inloggen' button
             echo "<a href='http://localhost:8000/inlog.php' class='hero-btn'>Inloggen</a>";
         }
       }
@@ -131,7 +132,7 @@ include_once 'includes/database.php';
       <div class="category-block">
 
         <?php
-        
+        // Show alles van burgers tenzij hij leeg is.
         //  Define SQL statement
         $sql = "SELECT * FROM gerechten WHERE type = 'burgers'";
 
@@ -188,7 +189,7 @@ include_once 'includes/database.php';
       <div class="category-block">
         
         <?php
-        
+        // Show alles van burgers tenzij hij leeg is.
         //  Define SQL statement
         $sql = "SELECT * FROM gerechten WHERE type = 'friet'";
 
@@ -245,7 +246,7 @@ include_once 'includes/database.php';
       <div class="category-block">
 
         <?php
-        
+        // Show alles van burgers tenzij hij leeg is.
         //  Define SQL statement
         $sql = "SELECT * FROM gerechten WHERE type = 'schotels'";
 
@@ -302,7 +303,7 @@ include_once 'includes/database.php';
       <div class="category-block">
 
         <?php
-        
+        // Show alles van burgers tenzij hij leeg is.
         //  Define SQL statement
         $sql = "SELECT * FROM gerechten WHERE type = 'kapsalon'";
 
@@ -359,7 +360,7 @@ include_once 'includes/database.php';
       <div class="category-block">
 
         <?php
-        
+        // Show alles van burgers tenzij hij leeg is.
         //  Define SQL statement
         $sql = "SELECT * FROM gerechten WHERE type = 'durum'";
 
@@ -416,7 +417,7 @@ include_once 'includes/database.php';
       <div class="category-block">
         
         <?php
-        
+        // Show alles van burgers tenzij hij leeg is.
         //  Define SQL statement
         $sql = "SELECT * FROM gerechten WHERE type = 'snacks'";
 
@@ -473,7 +474,7 @@ include_once 'includes/database.php';
       <div class="category-block">
         
         <?php
-        
+        // Show alles van burgers tenzij hij leeg is.
         //  Define SQL statement
         $sql = "SELECT * FROM gerechten WHERE type = 'drankjes'";
 

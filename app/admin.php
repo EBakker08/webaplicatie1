@@ -9,7 +9,7 @@ if (!isset($_SESSION['gebruiker_id'])) {
 
 <?php
 
-include_once 'includes/database.php';
+include_once 'includes/database.php'; // Include connectie naar database
 
 // //  Define SQL statement
 // $sql = "SELECT * FROM gerechten";
@@ -53,16 +53,16 @@ include_once 'includes/database.php';
 
       <?php
       
-      if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == true) {
-        if (isset($_SESSION['gebruiker_id'])) {
+      if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == true) {  // Check of gebruiker als admin is ingelogd
+        if (isset($_SESSION['gebruiker_id'])) { // Als er is ingelogd als admin, show 'uitloggen' button
             echo "<a href='http://localhost:8000/uitloggen.php' class='hero-btn'>Uitloggen</a>";
-        } else {
+        } else {  // Als er niet is ingelogd, show 'inloggen' button
             echo "<a href='http://localhost:8000/inlog.php' class='hero-btn'>Inloggen</a>";
         }
-      } else {
-        if (isset($_SESSION['gebruiker_id'])) {
+      } else {  // Anders als er is ingelogd als user...
+        if (isset($_SESSION['gebruiker_id'])) { // show 'uitloggen' button
             echo "<a href='http://localhost:8000/uitloggen.php' class='hero-btn'>Uitloggen</a>";
-        } else {
+        } else {  // Als er niet is ingelogd, show 'inloggen' button
             echo "<a href='http://localhost:8000/inlog.php' class='hero-btn'>Inloggen</a>";
         }
       }
@@ -103,11 +103,11 @@ include_once 'includes/database.php';
 
     <?php
     
-    include_once 'includes/adminFunctions.php';
+    include_once 'includes/adminFunctions.php'; // Include naar admin functions voor toevoegen, aanpassen en verwijderen
 
     ?>
 
-  </div><!-- .admin-page -->
+  </div>
 
   <!-- ======= FOOTER ======= -->
   <footer class="site-footer">
