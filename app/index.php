@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 if (!isset($_SESSION['gebruiker_id'])) {
     header("Location: /inlog.php");
     exit();
@@ -47,8 +48,24 @@ include_once 'includes/database.php';
     <div class="hero-bg"></div>
 
     <div class="hero-actions">
-      <a href="http://localhost:8000/admin.php" class="hero-btn">⚙ Admin</a>  <!-- Verander straks naar in if statement. -->
-      <a href="http://localhost:8000/inlog.php" class="hero-btn">Inloggen</a>  <!-- Verander straks naar in if statement. -->
+      <?php
+      
+      if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == true) {
+        echo "<a href='http://localhost:8000/admin.php' class='hero-btn is-admin'>⚙ Admin</a>";
+        if (isset($_SESSION['gebruiker_id'])) {
+            echo "<a href='http://localhost:8000/uitloggen.php' class='hero-btn'>Uitloggen</a>";
+        } else {
+            echo "<a href='http://localhost:8000/inlog.php' class='hero-btn'>Inloggen</a>";
+        }
+      } else {
+        if (isset($_SESSION['gebruiker_id'])) {
+            echo "<a href='http://localhost:8000/uitloggen.php' class='hero-btn'>Uitloggen</a>";
+        } else {
+            echo "<a href='http://localhost:8000/inlog.php' class='hero-btn'>Inloggen</a>";
+        }
+      }
+      
+      ?>
     </div>
 
     <!-- Gecentreerd logo: oranje blokje + naam + tagline -->
@@ -63,13 +80,11 @@ include_once 'includes/database.php';
   <nav class="nav-strip" role="navigation" aria-label="Menu navigatie">
 
     <div class="search-wrap">
-      
       <?php
       
       include_once 'includes/searchbar.php';
 
       ?>
-
     </div>
 
   </nav>

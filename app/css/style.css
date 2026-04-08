@@ -1,7 +1,5 @@
 
-*,
-*::before,
-*::after {
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -29,6 +27,11 @@
 html {
   font-size: 16px;
   scroll-behavior: smooth;
+}
+
+.fout-melding {
+  color: #dc1010;
+  font-weight: bold;
 }
 
 /* Basisstijl voor de hele pagina */
@@ -545,98 +548,6 @@ body {
 /* Klik: iets kleiner voor een press-effect */
 .add-btn:active {
   transform: scale(.95);
-}
-
-/* WINKELWAGEN SIDEBAR (rechterkolom): Vaste zijbalk die meescrollt totaan de sticky nav */
-.cart-sidebar {
-  width: 340px;
-  flex-shrink: 0;
-  /* Breedte blijft altijd 340px, wordt niet kleiner */
-  border-left: 1px solid var(--cream-dark);
-  background: #fff;
-  position: sticky;
-  top: 61px;
-  /* Hoogte van de sticky nav, zodat de sidebar daaronder begint */
-  height: calc(100vh - 61px);
-  /* Vult de rest van het scherm */
-  display: flex;
-  flex-direction: column;
-}
-
-/* Bovenste balk van de winkelwagen met de titel en het aantal items */
-.cart-header {
-  padding: 28px 28px 20px;
-  border-bottom: 1px solid var(--cream-dark);
-}
-
-/* Klein label "JOUW BESTELLING" boven de teller */
-.cart-title {
-  font-size: .75rem;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 4px;
-}
-
-/* Het grote getal dat het aantal items toont (bijv. "3 items") */
-.cart-count {
-  font-size: 1.5rem;
-  font-weight: 900;
-  color: var(--charcoal);
-}
-
-/* Scrollbare lijst met toegevoegde producten */
-.cart-items {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px 28px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--cream-dark) transparent;
-}
-
-/* Eén rij in de winkelwagen (emoji-icoon + naam/prijs + hoeveelheidscontrole) */
-.cart-item {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--cream-dark);
-}
-
-/* Laatste item krijgt geen onderrand */
-.cart-item:last-child {
-  border-bottom: none;
-}
-
-/* Klein gekleurd vlakje met emoji voor het product in de winkelwagen */
-.cart-item-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 10px;
-  background: var(--cream-dark);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.4rem;
-  flex-shrink: 0;
-}
-
-/* Naam en prijs van het winkelwagen-item */
-.cart-item-info {
-  flex: 1;
-}
-
-.cart-item-name {
-  font-size: .85rem;
-  font-weight: 600;
-  color: var(--charcoal);
-  margin-bottom: 2px;
-}
-
-.cart-item-price {
-  font-size: .8rem;
-  color: var(--text-muted);
 }
 
 /* De "− 1 +" hoeveelheidscontrole per winkelwagen-item */

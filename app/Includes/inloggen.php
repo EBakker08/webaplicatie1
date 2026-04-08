@@ -2,7 +2,8 @@
 
 include_once 'includes/database.php';
 
-//  Define SQL statement
+// Voor database connection check
+// //  Define SQL statement
 // $sql = "SELECT * FROM users";
 
 // //  Prepare SQL statement
@@ -81,7 +82,7 @@ if (isset($_POST['inloggen'])) {
 
             <div class="form-group">
                 <label for="wachtwoord">Wachtwoord</label>
-                <input type="password" name="wachtwoord" id="wachtwoord" placeholder="••••••••" required />
+                <input type="password" name="wachtwoord" id="wachtwoord" placeholder="Wachtwoord123!" required />
                 <?php
                 if ($fout_ww) {
                     echo "<span class='fout-melding'>";

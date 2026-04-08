@@ -20,14 +20,6 @@ include_once 'includes/inloggen.php';
 </head>
 
 <body>
-
-  <!-- ======= HEADER ======= -->
-  <header>
-    <div class="hero-actions">
-      <a href="http://localhost:8000/index.php" class="hero-btn2">Home</a>
-    </div>
-  </header>
-
   <!-- ======= FOOTER ======= -->
   <footer class="site-footer">
     <div class="footer-inner">

@@ -1,5 +1,6 @@
 <?php 
 session_start();
+
 if (!isset($_SESSION['gebruiker_id'])) {
     header("Location: /inlog.php");
     exit();
@@ -48,8 +49,25 @@ include_once 'includes/database.php';
 
     <div class="hero-actions">
       <a href="http://localhost:8000/" class="hero-btn">Home</a>
-      <a href="http://localhost:8000/inlog.php" class="hero-btn is-admin">⚙ Exit</a>
-      <a href="http://localhost:8000/inlog.php" class="hero-btn">Inloggen</a>  <!-- Verander straks naar in if statement. -->
+      <a href="http://localhost:8000/index.php" class="hero-btn is-admin">⚙ Exit</a>
+
+      <?php
+      
+      if (isset($_SESSION['isAdmin']) && $_SESSION['isAdmin'] == true) {
+        if (isset($_SESSION['gebruiker_id'])) {
+            echo "<a href='http://localhost:8000/uitloggen.php' class='hero-btn'>Uitloggen</a>";
+        } else {
+            echo "<a href='http://localhost:8000/inlog.php' class='hero-btn'>Inloggen</a>";
+        }
+      } else {
+        if (isset($_SESSION['gebruiker_id'])) {
+            echo "<a href='http://localhost:8000/uitloggen.php' class='hero-btn'>Uitloggen</a>";
+        } else {
+            echo "<a href='http://localhost:8000/inlog.php' class='hero-btn'>Inloggen</a>";
+        }
+      }
+      
+      ?>
     </div>
 
     <div class="logo">
