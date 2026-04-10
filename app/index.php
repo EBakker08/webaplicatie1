@@ -1,11 +1,4 @@
-<?php
-session_start();  // Start session
-
-if (!isset($_SESSION['gebruiker_id'])) {  // Als er geen gebruiker is ingelogd, stuur door naar inlog page en stop verdere uitvoering van de pagina
-    header("Location: /inlog.php");
-    exit();
-}
-?>
+<?php session_start();  // Start session ?>
 
 <?php
 
