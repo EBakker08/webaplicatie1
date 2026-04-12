@@ -1,8 +1,94 @@
+<?php
+
+include_once 'database.php';    // Connectie naar database
+
+// // Database connection check naar gerechten
+// //  Define SQL statement
+// $sql = "SELECT * FROM gerechten";
+
+// //  Prepare SQL statement
+// $statement = $pdo->prepare($sql);
+
+// //  Exacute SQL statement
+// $statement->execute();
+
+// $gerechten = $statement->fetchAll();
+
+// echo "<pre>";
+// print_r($gerechten);
+// echo "</pre>";
+
+?>
+
 <div class="tab-panels">
 
     <!-- ── TAB 1: TOEVOEGEN ──────────────────────────────────── -->
+    <?php
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['naam'])) {
+
+        // Formulierwaarden ophalen
+        $titel        = trim($_POST['naam']);
+        $beschrijving = trim($_POST['beschrijving']);
+        $prijs        = floatval($_POST['prijs']);
+        $type         = trim($_POST['categorie']);
+        $imagePath    = ''; // Leeg voor als er geen image word gegeven
+
+        // ===== Afbeelding uploaden =====
+        if (isset($_FILES['afbeelding']) && $_FILES['afbeelding']['error'] === UPLOAD_ERR_OK) {
+
+            $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/img/'; // Absoluut pad naar de img map
+
+            // Maak de img map aan als deze nog niet bestaat
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            // Haal de bestandsextensie op uit de originele bestandsnaam (bijv. "jpg", "png")
+            $extension = strtolower(pathinfo($_FILES['afbeelding']['name'], PATHINFO_EXTENSION));
+
+            // Genereer een unieke bestandsnaam om overschrijven van bestaande afbeeldingen te voorkomen
+            $fileName   = uniqid('gerecht_', true) . '.' . $extension;
+            $targetPath = $uploadDir . $fileName;
+
+            // Controleer de bestandsextensie om te zorgen dat het een afbeelding is
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+
+            if (!in_array($extension, $allowedExtensions)) {
+                die('Ongeldig afbeeldingsformaat. Alleen JPG, PNG, WEBP en GIF zijn toegestaan.');
+            }
+
+            // Verplaats het geüploade bestand van de tijdelijke map naar de img map
+            if (!move_uploaded_file($_FILES['afbeelding']['tmp_name'], $targetPath)) {
+                die('Afbeelding uploaden mislukt.');
+            }
+
+            // Sla alleen de bestandsnaam op, NIET het volledige pad (bijv. "gerecht_abc123.png")
+            // Het volledige pad wordt nergens anders in de code gebruikt
+            $imagePath = $fileName;
+        }
+
+        // --- Nieuw gerecht invoegen in de database ---
+
+        // Bereid de SQL query voor met placeholders om SQL injectie te voorkomen
+        // pborange, pbgreen en pbred worden altijd op 0 gezet (geen labels standaard)
+        $stmt = $pdo->prepare("
+            INSERT INTO gerechten (Titel, Beschrijving, Prijs, Type, Image, pborange, pbgreen, pbred)
+            VALUES (:titel, :beschrijving, :prijs, :type, :image, 0, 0, 0)
+        ");
+
+        // Koppel de formulierwaarden aan de placeholders en voer de query uit
+        $stmt->execute([
+            ':titel'        => $titel,
+            ':beschrijving' => $beschrijving,
+            ':prijs'        => $prijs,
+            ':type'         => $type,
+            ':image'        => $imagePath
+        ]);
+    }
+    ?>
+
     <div class="tab-content" id="content-toevoegen">
-        <form class="admin-form" action="admin_toevoegen.php" method="POST" enctype="multipart/form-data">
+        <form class="admin-form" name="toevoegen" action="admin.php" method="POST" enctype="multipart/form-data">
 
             <p class="form-section-title">Gegevens</p>
 
@@ -16,20 +102,19 @@
                     <select id="t-categorie" name="categorie" required>
                         <option value="" disabled selected>Kies een categorie</option>
                         <option value="burgers">Burgers</option>
-                        <option value="fries">Loaded Fries</option>
+                        <option value="friet">Loaded Fries</option>
                         <option value="schotels">Schotels</option>
                         <option value="kapsalon">Kapsalon</option>
                         <option value="durum">Durum</option>
                         <option value="snacks">Snacks</option>
-                        <option value="dranken">Dranken</option>
+                        <option value="drankjes">Drankjes</option>
                     </select>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="t-beschrijving">Beschrijving</label>
-                <textarea id="t-beschrijving" name="beschrijving"
-                    placeholder="Korte omschrijving van het gerecht..."></textarea>
+                <textarea id="t-beschrijving" name="beschrijving" placeholder="Korte omschrijving van het gerecht..."></textarea>
             </div>
 
             <div class="form-row">
@@ -46,20 +131,6 @@
 
             <hr class="form-divider">
 
-            <p class="form-section-title">Badge</p>
-
-            <div class="badge-options">
-                <label class="badge-option">
-                    <input type="checkbox" name="badge_orange" value="1"> Bestseller (oranje)
-                </label>
-                <label class="badge-option">
-                    <input type="checkbox" name="badge_green" value="1"> Vegie (groen)
-                </label>
-                <label class="badge-option">
-                    <input type="checkbox" name="badge_red" value="1"> Spicy (rood)
-                </label>
-            </div>
-
             <div class="form-actions">
                 <button type="submit" class="btn-primary">+ Toevoegen</button>
                 <button type="reset" class="btn-secondary">Wis velden</button>
@@ -68,11 +139,13 @@
         </form>
     </div>
 
+
+
     <!-- ── TAB 2: AANPASSEN ──────────────────────────────────── -->
     <div class="tab-content" id="content-aanpassen">
 
         <table class="product-table">
-            <thead>
+            <!-- <thead>
                 <tr>
                     <th style="width:52px"></th>
                     <th>Gerecht</th>
@@ -81,21 +154,61 @@
                     <th>Badge</th>
                     <th></th>
                 </tr>
-            </thead>
+            </thead> -->
+
+
+            <?php
+
+            //  Show alle gerechten tenzij hij leeg is.
+            //  Define SQL statement
+            $sql = "SELECT * FROM gerechten";
+
+            //  Prepare SQL statement
+            $statement = $pdo->prepare($sql);
+
+            //  Exacute SQL statement
+            $statement->execute();
+
+            $alleGerechten = $statement->fetchAll();
+
+            if ($alleGerechten == []) {
+
+            } else {
+            echo "<thead>";
+            echo    "<tr>";
+            echo        "<th style=\"width:52px\"></th>";
+            echo        "<th>Gerecht</th>";
+            echo        "<th>Categorie</th>";
+            echo        "<th>Prijs</th>";
+            echo        "<th>Badge</th>";
+            echo        "<th></th>";
+            echo    "</tr>";
+            echo "</thead>";
+            }
+
+            ?>
+
+            <?php
+            
+            foreach($alleGerechten as $gerecht) {
+            echo    "<tr>";
+            echo        "<td><img class='tabel-img' src='img/" . $gerecht['image'] . "' alt='gerecht image'></td>";
+            echo        "<td>";
+            echo            "<div class='tabel-naam'>" . $gerecht['titel'] . "</div>";
+            echo            "<div class='tabel-desc'>" . $gerecht['beschrijving'] . "</div>";
+            echo        "</td>";
+            echo        "<td>" . $gerecht['type'] . "</td>";
+            echo        "<td class='tabel-prijs'>€" . $gerecht['prijs'] . "</td>";
+            echo        "<td><a href='#edit-1' class='btn-edit'>Bewerken</a></td>";
+            echo    "</tr>";
+            }
+
+            ?>
+
+
+
             <tbody>
 
-                <!-- Rij 1 -->
-                <tr>
-                    <td><img class="tabel-img" src="https://placehold.co/96x96/e8e2d8/a09880?text=ST" alt=""></td>
-                    <td>
-                        <div class="tabel-naam">Straat Classic</div>
-                        <div class="tabel-desc">Black Angus smashed patty, burgersaus...</div>
-                    </td>
-                    <td>Burgers</td>
-                    <td class="tabel-prijs">€ 13,50</td>
-                    <td><span class="tabel-badge">Bestseller</span></td>
-                    <td><a href="#edit-1" class="btn-edit">Bewerken</a></td>
-                </tr>
                 <tr class="edit-form-row" id="edit-1">
                     <td colspan="6">
                         <form class="edit-inner" action="admin_aanpassen.php" method="POST"
@@ -150,246 +263,61 @@
                     </td>
                 </tr>
 
-                <!-- Rij 2 -->
-                <tr>
-                    <td><img class="tabel-img" src="https://placehold.co/96x96/e8e2d8/a09880?text=ST" alt=""></td>
-                    <td>
-                        <div class="tabel-naam">Truffle Fries</div>
-                        <div class="tabel-desc">Huisgesneden friet met truffelolie...</div>
-                    </td>
-                    <td>Loaded Fries</td>
-                    <td class="tabel-prijs">€ 9,50</td>
-                    <td><span class="tabel-badge">Fan fave</span></td>
-                    <td><a href="#edit-2" class="btn-edit">Bewerken</a></td>
-                </tr>
-                <tr class="edit-form-row" id="edit-2">
-                    <td colspan="6">
-                        <form class="edit-inner" action="admin_aanpassen.php" method="POST"
-                            enctype="multipart/form-data">
-                            <input type="hidden" name="id" value="2">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Naam</label>
-                                    <input type="text" name="naam" value="Truffle Fries">
-                                </div>
-                                <div class="form-group">
-                                    <label>Categorie</label>
-                                    <select name="categorie">
-                                        <option value="burgers">Burgers</option>
-                                        <option value="fries" selected>Loaded Fries</option>
-                                        <option value="schotels">Schotels</option>
-                                        <option value="kapsalon">Kapsalon</option>
-                                        <option value="durum">Durum</option>
-                                        <option value="snacks">Snacks</option>
-                                        <option value="dranken">Dranken</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Beschrijving</label>
-                                <textarea
-                                    name="beschrijving">Huisgesneden friet met truffelolie, Parmezaan en verse peterselie.</textarea>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Prijs (€)</label>
-                                    <input type="number" name="prijs" value="9.50" step="0.01" min="0">
-                                </div>
-                                <div class="form-group">
-                                    <label>Nieuwe afbeelding</label>
-                                    <input type="file" name="afbeelding" accept="image/*">
-                                </div>
-                            </div>
-                            <div class="badge-options">
-                                <label class="badge-option"><input type="checkbox" name="badge_orange" value="1"
-                                        checked> Bestseller</label>
-                                <label class="badge-option"><input type="checkbox" name="badge_green" value="1">
-                                    Vegie</label>
-                                <label class="badge-option"><input type="checkbox" name="badge_red" value="1">
-                                    Spicy</label>
-                            </div>
-                            <div class="form-actions">
-                                <button type="submit" class="btn-primary">Opslaan</button>
-                                <a href="#" class="btn-secondary">Annuleren</a>
-                            </div>
-                        </form>
-                    </td>
-                </tr>
-
-                <!-- Rij 3 -->
-                <tr>
-                    <td><img class="tabel-img" src="https://placehold.co/96x96/e8e2d8/a09880?text=ST" alt=""></td>
-                    <td>
-                        <div class="tabel-naam">Green Monster</div>
-                        <div class="tabel-desc">Plant-based patty met avocado...</div>
-                    </td>
-                    <td>Burgers</td>
-                    <td class="tabel-prijs">€ 14,20</td>
-                    <td><span class="tabel-badge groen">Vegie</span></td>
-                    <td><a href="#edit-3" class="btn-edit">Bewerken</a></td>
-                </tr>
-                <tr class="edit-form-row" id="edit-3">
-                    <td colspan="6">
-                        <form class="edit-inner" action="admin_aanpassen.php" method="POST"
-                            enctype="multipart/form-data">
-                            <input type="hidden" name="id" value="3">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Naam</label>
-                                    <input type="text" name="naam" value="Green Monster">
-                                </div>
-                                <div class="form-group">
-                                    <label>Categorie</label>
-                                    <select name="categorie">
-                                        <option value="burgers" selected>Burgers</option>
-                                        <option value="fries">Loaded Fries</option>
-                                        <option value="schotels">Schotels</option>
-                                        <option value="kapsalon">Kapsalon</option>
-                                        <option value="durum">Durum</option>
-                                        <option value="snacks">Snacks</option>
-                                        <option value="dranken">Dranken</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Beschrijving</label>
-                                <textarea
-                                    name="beschrijving">Plant-based patty met avocado, rucola, tomaat en frisse citroen-tahini dressing.</textarea>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Prijs (€)</label>
-                                    <input type="number" name="prijs" value="14.20" step="0.01" min="0">
-                                </div>
-                                <div class="form-group">
-                                    <label>Nieuwe afbeelding</label>
-                                    <input type="file" name="afbeelding" accept="image/*">
-                                </div>
-                            </div>
-                            <div class="badge-options">
-                                <label class="badge-option"><input type="checkbox" name="badge_orange" value="1">
-                                    Bestseller</label>
-                                <label class="badge-option"><input type="checkbox" name="badge_green" value="1" checked>
-                                    Vegie</label>
-                                <label class="badge-option"><input type="checkbox" name="badge_red" value="1">
-                                    Spicy</label>
-                            </div>
-                            <div class="form-actions">
-                                <button type="submit" class="btn-primary">Opslaan</button>
-                                <a href="#" class="btn-secondary">Annuleren</a>
-                            </div>
-                        </form>
-                    </td>
-                </tr>
-
             </tbody>
         </table>
     </div>
 
+
+
     <!-- ── TAB 3: VERWIJDEREN ────────────────────────────────── -->
     <div class="tab-content" id="content-verwijderen">
 
-        <div class="delete-warning">
-            ⚠️ Verwijderen kan niet ongedaan worden gemaakt. Weet je het zeker?
-        </div>
+        <div class="delete-warning">⚠️ Verwijderen kan niet ongedaan worden gemaakt. Weet u het zeker?</div>
 
         <div class="delete-grid">
 
-            <div class="delete-card">
-                <img class="delete-card-img" src="https://placehold.co/480x260/e8e2d8/a09880?text=ST"
-                    alt="Straat Classic">
-                <div class="delete-card-body">
-                    <div class="delete-card-name">Straat Classic</div>
-                    <div class="delete-card-cat">Burgers</div>
-                    <div class="delete-card-price">€ 13,50</div>
-                </div>
-                <div class="delete-card-footer">
-                    <form action="admin_verwijderen.php" method="POST">
-                        <input type="hidden" name="id" value="1">
-                        <button type="submit" class="btn-danger-full">🗑 Verwijderen</button>
-                    </form>
-                </div>
-            </div>
+        <?php
+        
+        //  Show alle gerechten tenzij hij leeg is.
+        //  Define SQL statement
+        $sql = "SELECT * FROM gerechten";
 
-            <div class="delete-card">
-                <img class="delete-card-img" src="https://placehold.co/480x260/e8e2d8/a09880?text=ST"
-                    alt="Truffle Fries">
-                <div class="delete-card-body">
-                    <div class="delete-card-name">Truffle Fries</div>
-                    <div class="delete-card-cat">Loaded Fries</div>
-                    <div class="delete-card-price">€ 9,50</div>
-                </div>
-                <div class="delete-card-footer">
-                    <form action="admin_verwijderen.php" method="POST">
-                        <input type="hidden" name="id" value="2">
-                        <button type="submit" class="btn-danger-full">🗑 Verwijderen</button>
-                    </form>
-                </div>
-            </div>
+        //  Prepare SQL statement
+        $statement = $pdo->prepare($sql);
 
-            <div class="delete-card">
-                <img class="delete-card-img" src="https://placehold.co/480x260/e8e2d8/a09880?text=ST"
-                    alt="Green Monster">
-                <div class="delete-card-body">
-                    <div class="delete-card-name">Green Monster</div>
-                    <div class="delete-card-cat">Burgers</div>
-                    <div class="delete-card-price">€ 14,20</div>
-                </div>
-                <div class="delete-card-footer">
-                    <form action="admin_verwijderen.php" method="POST">
-                        <input type="hidden" name="id" value="3">
-                        <button type="submit" class="btn-danger-full">🗑 Verwijderen</button>
-                    </form>
-                </div>
-            </div>
+        //  Exacute SQL statement
+        $statement->execute();
 
-            <div class="delete-card">
-                <img class="delete-card-img" src="https://placehold.co/480x260/e8e2d8/a09880?text=ST"
-                    alt="Kapsalon Doner">
-                <div class="delete-card-body">
-                    <div class="delete-card-name">Kapsalon Doner</div>
-                    <div class="delete-card-cat">Kapsalon</div>
-                    <div class="delete-card-price">€ 13,50</div>
-                </div>
-                <div class="delete-card-footer">
-                    <form action="admin_verwijderen.php" method="POST">
-                        <input type="hidden" name="id" value="4">
-                        <button type="submit" class="btn-danger-full">🗑 Verwijderen</button>
-                    </form>
-                </div>
-            </div>
+        $gerechten = $statement->fetchAll();
 
-            <div class="delete-card">
-                <img class="delete-card-img" src="https://placehold.co/480x260/e8e2d8/a09880?text=ST"
-                    alt="Mozzarella Sticks">
-                <div class="delete-card-body">
-                    <div class="delete-card-name">Mozzarella Sticks</div>
-                    <div class="delete-card-cat">Snacks</div>
-                    <div class="delete-card-price">€ 7,50</div>
-                </div>
-                <div class="delete-card-footer">
-                    <form action="admin_verwijderen.php" method="POST">
-                        <input type="hidden" name="id" value="5">
-                        <button type="submit" class="btn-danger-full">🗑 Verwijderen</button>
-                    </form>
-                </div>
-            </div>
+        ?>
 
-            <div class="delete-card">
-                <img class="delete-card-img" src="https://placehold.co/480x260/e8e2d8/a09880?text=ST"
-                    alt="Huislimonade">
-                <div class="delete-card-body">
-                    <div class="delete-card-name">Huislimonade</div>
-                    <div class="delete-card-cat">Dranken</div>
-                    <div class="delete-card-price">€ 4,50</div>
-                </div>
-                <div class="delete-card-footer">
-                    <form action="admin_verwijderen.php" method="POST">
-                        <input type="hidden" name="id" value="6">
-                        <button type="submit" class="btn-danger-full">🗑 Verwijderen</button>
-                    </form>
-                </div>
-            </div>
+        <?php
+        
+        foreach($gerechten as $eenGerecht) {
+        echo    "<div class='delete-card'>";
+        echo        "<img class='delete-card-img' src='img/" . $eenGerecht['image'] . "' alt='gerecht image'>";
+        echo        "<div class='delete-card-body'>";
+        echo        "<div class='delete-card-name'>" . $eenGerecht['titel'] . "</div>";
+        echo        "<div class='delete-card-cat'>" . $eenGerecht['type'] . "</div>";
+        echo        "<div class='delete-card-price'>€" . $eenGerecht['prijs'] . "</div>";
+        echo    "</div>";
+        echo    "<div class='delete-card-footer'>";
+
+        ?>
+
+        <form action="admin_verwijderen.php" method="POST">
+            <input type="hidden" name="id" value="1">
+            <button type="submit" class="btn-danger-full">🗑 Verwijderen</button>
+        </form>
+
+        <?php
+
+        echo    "</div>";
+        echo "</div>";
+        }
+        
+        ?>
 
         </div>
     </div>
