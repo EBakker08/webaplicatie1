@@ -41,7 +41,7 @@ include_once 'includes/database.php'; // Include connectie naar database
     <div class="hero-bg"></div>
 
     <div class="hero-actions">
-      <a href="http://localhost:8000/" class="hero-btn">Home</a>
+      <a href="http://localhost:8000/index.php" class="hero-btn">Home</a>
       <a href="http://localhost:8000/index.php" class="hero-btn is-admin">⚙ Exit</a>
 
       <?php

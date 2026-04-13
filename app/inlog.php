@@ -21,6 +21,10 @@ include_once 'includes/inloggen.php'; // Include inloggen.php waar alles voor in
 
 <body>
   <!-- ======= FOOTER ======= -->
+  <div class="hero-actions">
+    <a href="http://localhost:8000/" class="hero-btn3">Home</a>
+  </div>
+
   <footer class="site-footer">
     <div class="footer-inner">
       <div class="footer-brand">

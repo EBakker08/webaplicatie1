@@ -88,6 +88,22 @@ body {
   display: inline-block;
 }
 
+.hero-btn3 {
+  padding: 9px 22px;
+  border: 1.5px solid rgba(255, 252, 247, 0.3);
+  border-radius: 99px;
+  background: var(--cream-dark);
+  color: var(--charcoal);
+  font-family: inherit;
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s;
+  text-decoration: none;
+  display: inline-block;
+}
+
 /* Login/Uitloggen knop hover: oranje */
 .hero-btn:hover {
   background: var(--orange);
@@ -97,6 +113,12 @@ body {
 .hero-btn2:hover {
   background: var(--green-deep);
   border-color: var(--green-mid);
+  color: var(--cream);
+}
+
+.hero-btn3:hover {
+  background: var(--orange);
+  border-color: var(--orange);
   color: var(--cream);
 }
 

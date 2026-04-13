@@ -1,25 +1,3 @@
-<?php
-
-include_once 'database.php';    // Connectie naar database
-
-// // Database connection check naar gerechten
-// //  Define SQL statement
-// $sql = "SELECT * FROM gerechten";
-
-// //  Prepare SQL statement
-// $statement = $pdo->prepare($sql);
-
-// //  Exacute SQL statement
-// $statement->execute();
-
-// $gerechten = $statement->fetchAll();
-
-// echo "<pre>";
-// print_r($gerechten);
-// echo "</pre>";
-
-?>
-
 <div class="tab-panels">
 
     <!-- ── TAB 1: TOEVOEGEN ──────────────────────────────────── -->
@@ -36,7 +14,7 @@ include_once 'database.php';    // Connectie naar database
         // ===== Afbeelding uploaden =====
         if (isset($_FILES['afbeelding']) && $_FILES['afbeelding']['error'] === UPLOAD_ERR_OK) {
 
-            $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/img/'; // Absoluut pad naar de img map
+            $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/img/'; // Pad naar de img map
 
             // Maak de img map aan als deze nog niet bestaat
             if (!is_dir($uploadDir)) {
@@ -67,7 +45,7 @@ include_once 'database.php';    // Connectie naar database
             $imagePath = $fileName;
         }
 
-        // --- Nieuw gerecht invoegen in de database ---
+        // ===== Nieuw gerecht invoegen in de database =====
 
         // Bereid de SQL query voor met placeholders om SQL injectie te voorkomen
         // pborange, pbgreen en pbred worden altijd op 0 gezet (geen labels standaard)
@@ -145,17 +123,6 @@ include_once 'database.php';    // Connectie naar database
     <div class="tab-content" id="content-aanpassen">
 
         <table class="product-table">
-            <!-- <thead>
-                <tr>
-                    <th style="width:52px"></th>
-                    <th>Gerecht</th>
-                    <th>Categorie</th>
-                    <th>Prijs</th>
-                    <th>Badge</th>
-                    <th></th>
-                </tr>
-            </thead> -->
-
 
             <?php
 
@@ -180,7 +147,6 @@ include_once 'database.php';    // Connectie naar database
             echo        "<th>Gerecht</th>";
             echo        "<th>Categorie</th>";
             echo        "<th>Prijs</th>";
-            echo        "<th>Badge</th>";
             echo        "<th></th>";
             echo    "</tr>";
             echo "</thead>";
@@ -211,8 +177,7 @@ include_once 'database.php';    // Connectie naar database
 
                 <tr class="edit-form-row" id="edit-1">
                     <td colspan="6">
-                        <form class="edit-inner" action="admin_aanpassen.php" method="POST"
-                            enctype="multipart/form-data">
+                        <form class="edit-inner" name="aanpassen" action="admin.php" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="id" value="1">
                             <div class="form-row">
                                 <div class="form-group">
@@ -294,6 +259,19 @@ include_once 'database.php';    // Connectie naar database
 
         <?php
         
+        // ===== Gerecht verwijderen =====
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
+
+            $id = intval($_POST['id']); // intval zorgt dat het altijd een getal is, geen kwaadaardige invoer
+
+            $stmt = $pdo->prepare("DELETE FROM gerechten WHERE id = :id");
+            $stmt->execute([':id' => $id]);
+        }
+        
+        ?>
+
+        <?php
+        
         foreach($gerechten as $eenGerecht) {
         echo    "<div class='delete-card'>";
         echo        "<img class='delete-card-img' src='img/" . $eenGerecht['image'] . "' alt='gerecht image'>";
@@ -306,8 +284,8 @@ include_once 'database.php';    // Connectie naar database
 
         ?>
 
-        <form action="admin_verwijderen.php" method="POST">
-            <input type="hidden" name="id" value="1">
+        <form name="verwijderen" action="admin.php" method="POST">
+            <input type="hidden" name="id" value="<?php echo $eenGerecht['id']; ?>">
             <button type="submit" class="btn-danger-full">🗑 Verwijderen</button>
         </form>
 
@@ -322,4 +300,4 @@ include_once 'database.php';    // Connectie naar database
         </div>
     </div>
 
-</div><!-- .tab-panels -->
+</div>
