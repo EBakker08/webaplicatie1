@@ -2,7 +2,7 @@
 
     <!-- ── TAB 1: TOEVOEGEN ──────────────────────────────────── -->
     <?php
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['naam'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['actie']) && $_POST['actie'] === 'toevoegen') {
 
         // Formulierwaarden ophalen
         $titel        = trim($_POST['naam']);
@@ -67,6 +67,7 @@
 
     <div class="tab-content" id="content-toevoegen">
         <form class="admin-form" name="toevoegen" action="admin.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="actie" value="toevoegen">
 
             <p class="form-section-title">Gegevens</p>
 
@@ -120,113 +121,176 @@
 
 
     <!-- ── TAB 2: AANPASSEN ──────────────────────────────────── -->
+
+    <?php
+    // ===== Gerecht aanpassen =====
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['actie']) && $_POST['actie'] === 'aanpassen') {
+
+        $id           = intval($_POST['id']);
+        $titel        = trim($_POST['naam']);
+        $beschrijving = trim($_POST['beschrijving']);
+        $prijs        = floatval($_POST['prijs']);
+        $type         = trim($_POST['categorie']);
+        $pborange     = isset($_POST['badge_orange']) ? 1 : 0;
+        $pbgreen      = isset($_POST['badge_green'])  ? 1 : 0;
+        $pbred        = isset($_POST['badge_red'])    ? 1 : 0;
+
+        // ===== Afbeelding uploaden als er een nieuwe is meegegeven =====
+        $imagePath = trim($_POST['huidige_afbeelding']); // Houd de huidige afbeelding als standaard
+
+        if (isset($_FILES['afbeelding']) && $_FILES['afbeelding']['error'] === UPLOAD_ERR_OK) {
+
+            $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/img/';
+
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            $extension = strtolower(pathinfo($_FILES['afbeelding']['name'], PATHINFO_EXTENSION));
+            $fileName   = uniqid('gerecht_', true) . '.' . $extension;
+            $targetPath = $uploadDir . $fileName;
+
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+
+            if (!in_array($extension, $allowedExtensions)) {
+                die('Ongeldig afbeeldingsformaat. Alleen JPG, PNG, WEBP en GIF zijn toegestaan.');
+            }
+
+            if (!move_uploaded_file($_FILES['afbeelding']['tmp_name'], $targetPath)) {
+                die('Afbeelding uploaden mislukt.');
+            }
+
+            $imagePath = $fileName;
+        }
+
+        // ===== UPDATE query uitvoeren =====
+        $stmt = $pdo->prepare("
+            UPDATE gerechten
+            SET Titel = :titel, Beschrijving = :beschrijving, Prijs = :prijs, Type = :type, Image = :image, pborange = :pborange, pbgreen = :pbgreen, pbred = :pbred
+            WHERE id = :id
+        ");
+
+        $stmt->execute([
+            ':titel'        => $titel,
+            ':beschrijving' => $beschrijving,
+            ':prijs'        => $prijs,
+            ':type'         => $type,
+            ':image'        => $imagePath,
+            ':pborange'     => $pborange,
+            ':pbgreen'      => $pbgreen,
+            ':pbred'        => $pbred,
+            ':id'           => $id
+        ]);
+
+        header('Location: admin.php');
+        exit();
+    }
+    ?>
+
     <div class="tab-content" id="content-aanpassen">
 
         <table class="product-table">
 
             <?php
 
-            //  Show alle gerechten tenzij hij leeg is.
-            //  Define SQL statement
             $sql = "SELECT * FROM gerechten";
-
-            //  Prepare SQL statement
             $statement = $pdo->prepare($sql);
-
-            //  Exacute SQL statement
             $statement->execute();
-
             $alleGerechten = $statement->fetchAll();
 
-            if ($alleGerechten == []) {
-
-            } else {
-            echo "<thead>";
-            echo    "<tr>";
-            echo        "<th style=\"width:52px\"></th>";
-            echo        "<th>Gerecht</th>";
-            echo        "<th>Categorie</th>";
-            echo        "<th>Prijs</th>";
-            echo        "<th></th>";
-            echo    "</tr>";
-            echo "</thead>";
+            if ($alleGerechten != []) {
+                echo "<thead>";
+                echo    "<tr>";
+                echo        "<th style=\"width:52px\"></th>";
+                echo        "<th>Gerecht</th>";
+                echo        "<th>Categorie</th>";
+                echo        "<th>Prijs</th>";
+                echo        "<th></th>";
+                echo    "</tr>";
+                echo "</thead>";
             }
 
             ?>
-
-            <?php
-            
-            foreach($alleGerechten as $gerecht) {
-            echo    "<tr>";
-            echo        "<td><img class='tabel-img' src='img/" . $gerecht['image'] . "' alt='gerecht image'></td>";
-            echo        "<td>";
-            echo            "<div class='tabel-naam'>" . $gerecht['titel'] . "</div>";
-            echo            "<div class='tabel-desc'>" . $gerecht['beschrijving'] . "</div>";
-            echo        "</td>";
-            echo        "<td>" . $gerecht['type'] . "</td>";
-            echo        "<td class='tabel-prijs'>€" . $gerecht['prijs'] . "</td>";
-            echo        "<td><a href='#edit-1' class='btn-edit'>Bewerken</a></td>";
-            echo    "</tr>";
-            }
-
-            ?>
-
-
 
             <tbody>
 
-                <tr class="edit-form-row" id="edit-1">
+            <?php foreach($alleGerechten as $gerecht) { ?>
+
+                <tr>
+                    <td><img class='tabel-img' src='img/<?php echo $gerecht['image']; ?>' alt='gerecht image'></td>
+                    <td>
+                        <div class='tabel-naam'><?php echo $gerecht['titel']; ?></div>
+                        <div class='tabel-desc'><?php echo $gerecht['beschrijving']; ?></div>
+                    </td>
+                    <td><?php echo $gerecht['type']; ?></td>
+                    <td class='tabel-prijs'>€<?php echo $gerecht['prijs']; ?></td>
+                    <td><a href='#edit-<?php echo $gerecht['id']; ?>' class='btn-edit'>Bewerken</a></td>
+                </tr>
+
+                <tr class="edit-form-row" id="edit-<?php echo $gerecht['id']; ?>">
                     <td colspan="6">
                         <form class="edit-inner" name="aanpassen" action="admin.php" method="POST" enctype="multipart/form-data">
-                            <input type="hidden" name="id" value="1">
+                            <input type="hidden" name="actie" value="aanpassen">
+                            <input type="hidden" name="id" value="<?php echo $gerecht['id']; ?>">
+                            <input type="hidden" name="huidige_afbeelding" value="<?php echo $gerecht['image']; ?>">
+
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>Naam</label>
-                                    <input type="text" name="naam" value="Straat Classic">
+                                    <input type="text" name="naam" value="<?php echo $gerecht['titel']; ?>">
                                 </div>
                                 <div class="form-group">
                                     <label>Categorie</label>
                                     <select name="categorie">
-                                        <option value="burgers" selected>Burgers</option>
-                                        <option value="fries">Loaded Fries</option>
-                                        <option value="schotels">Schotels</option>
-                                        <option value="kapsalon">Kapsalon</option>
-                                        <option value="durum">Durum</option>
-                                        <option value="snacks">Snacks</option>
-                                        <option value="dranken">Dranken</option>
+                                        <option value="burgers"  <?php echo $gerecht['type'] === 'burgers'  ? 'selected' : ''; ?>>Burgers</option>
+                                        <option value="friet"    <?php echo $gerecht['type'] === 'friet'    ? 'selected' : ''; ?>>Loaded Fries</option>
+                                        <option value="schotels" <?php echo $gerecht['type'] === 'schotels' ? 'selected' : ''; ?>>Schotels</option>
+                                        <option value="kapsalon" <?php echo $gerecht['type'] === 'kapsalon' ? 'selected' : ''; ?>>Kapsalon</option>
+                                        <option value="durum"    <?php echo $gerecht['type'] === 'durum'    ? 'selected' : ''; ?>>Durum</option>
+                                        <option value="snacks"   <?php echo $gerecht['type'] === 'snacks'   ? 'selected' : ''; ?>>Snacks</option>
+                                        <option value="drankjes" <?php echo $gerecht['type'] === 'drankjes' ? 'selected' : ''; ?>>Drankjes</option>
                                     </select>
                                 </div>
                             </div>
+
                             <div class="form-group">
                                 <label>Beschrijving</label>
-                                <textarea
-                                    name="beschrijving">Dikke Black Angus smashed patty, huisgemaakte burgersaus, augurk en karamelui op een brioche bun.</textarea>
+                                <textarea name="beschrijving"><?php echo $gerecht['beschrijving']; ?></textarea>
                             </div>
+
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>Prijs (€)</label>
-                                    <input type="number" name="prijs" value="13.50" step="0.01" min="0">
+                                    <input type="number" name="prijs" value="<?php echo $gerecht['prijs']; ?>" step="0.01" min="0">
                                 </div>
                                 <div class="form-group">
                                     <label>Nieuwe afbeelding</label>
                                     <input type="file" name="afbeelding" accept="image/*">
                                 </div>
                             </div>
+
                             <div class="badge-options">
-                                <label class="badge-option"><input type="checkbox" name="badge_orange" value="1"
-                                        checked> Bestseller</label>
-                                <label class="badge-option"><input type="checkbox" name="badge_green" value="1">
-                                    Vegie</label>
-                                <label class="badge-option"><input type="checkbox" name="badge_red" value="1">
-                                    Spicy</label>
+                                <label class="badge-option">
+                                    <input type="checkbox" name="badge_orange" value="1" <?php echo $gerecht['pborange'] ? 'checked' : ''; ?>> Bestseller
+                                </label>
+                                <label class="badge-option">
+                                    <input type="checkbox" name="badge_green" value="1" <?php echo $gerecht['pbgreen'] ? 'checked' : ''; ?>> Vegie
+                                </label>
+                                <label class="badge-option">
+                                    <input type="checkbox" name="badge_red" value="1" <?php echo $gerecht['pbred'] ? 'checked' : ''; ?>> Spicy
+                                </label>
                             </div>
+
                             <div class="form-actions">
                                 <button type="submit" class="btn-primary">Opslaan</button>
                                 <a href="#" class="btn-secondary">Annuleren</a>
                             </div>
+
                         </form>
                     </td>
                 </tr>
+
+            <?php } ?>
 
             </tbody>
         </table>
