@@ -25,8 +25,8 @@ if ($zoekopdracht == '') {  // Als er geen zoekopdracht is laat dan alle gerecht
     $sql = "SELECT * FROM gerechten WHERE titel LIKE ? OR beschrijving LIKE ? OR type LIKE ?";  // Kijk of het voorkomt in de titel, beschrijving of als type
     $statement = $pdo->prepare($sql);
     $statement->execute([
-        '%' . $zoekopdracht . '%',  // % betekend dat er iets voor of na de zoekopdracht kan staan
-        '%' . $zoekopdracht . '%',
+        '%' . $zoekopdracht . '%',  // % betekend dat er iets voor of na de zoekopdracht kan staan.
+        '%' . $zoekopdracht . '%',  // Doe dit voor alle drie de velden.
         '%' . $zoekopdracht . '%'
     ]);
 }

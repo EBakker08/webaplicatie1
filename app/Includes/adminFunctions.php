@@ -1,60 +1,54 @@
 <div class="tab-panels">
 
-    <!-- ── TAB 1: TOEVOEGEN ──────────────────────────────────── -->
+    <!-- ──────────────────────────────────── TOEVOEGEN ──────────────────────────────────── -->
     <?php
+    // Als er een POST request is en de actie is toevoegen, voer dan de code uit om een nieuw gerecht toe te voegen.
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['actie']) && $_POST['actie'] === 'toevoegen') {
 
-        // Formulierwaarden ophalen
+        // Waarden aangeven.
         $titel        = trim($_POST['naam']);
         $beschrijving = trim($_POST['beschrijving']);
         $prijs        = floatval($_POST['prijs']);
         $type         = trim($_POST['categorie']);
-        $imagePath    = ''; // Leeg voor als er geen image word gegeven
+        $imagePath    = ''; // Leeg voor als er geen image word geupload.
 
-        // ===== Afbeelding uploaden =====
-        if (isset($_FILES['afbeelding']) && $_FILES['afbeelding']['error'] === UPLOAD_ERR_OK) {
+        // ====== Afbeelding uploaden =====
+        if (isset($_FILES['afbeelding']) && $_FILES['afbeelding']['error'] === UPLOAD_ERR_OK) { // Als er een afbeelding is geüpload verwerk deze dan.
 
-            $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/img/'; // Pad naar de img map
+            $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/img/'; // Pad naar de img map.
 
-            // Maak de img map aan als deze nog niet bestaat
-            if (!is_dir($uploadDir)) {
+            if (!is_dir($uploadDir)) {  // Maak de img map aan als deze nog niet bestaat.
                 mkdir($uploadDir, 0755, true);
             }
 
-            // Haal de bestandsextensie op uit de originele bestandsnaam (bijv. "jpg", "png")
+            // Haal de bestandsextensie op uit de bestandsnaam.
             $extension = strtolower(pathinfo($_FILES['afbeelding']['name'], PATHINFO_EXTENSION));
-
-            // Genereer een unieke bestandsnaam om overschrijven van bestaande afbeeldingen te voorkomen
             $fileName   = uniqid('gerecht_', true) . '.' . $extension;
-            $targetPath = $uploadDir . $fileName;
+            $targetPath = $uploadDir . $fileName;   // Genereer een unieke bestandsnaam.
 
-            // Controleer de bestandsextensie om te zorgen dat het een afbeelding is
-            $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif']; // Controleer de bestandsextensie om te zorgen dat het een afbeelding is.
 
-            if (!in_array($extension, $allowedExtensions)) {
+            if (!in_array($extension, $allowedExtensions)) {    // Als het geen bestand is die mag, dan stop het proces en geef een foutmelding.
                 die('Ongeldig afbeeldingsformaat. Alleen JPG, PNG, WEBP en GIF zijn toegestaan.');
             }
 
             // Verplaats het geüploade bestand van de tijdelijke map naar de img map
-            if (!move_uploaded_file($_FILES['afbeelding']['tmp_name'], $targetPath)) {
+            if (!move_uploaded_file($_FILES['afbeelding']['tmp_name'], $targetPath)) {  // Als het verplaatsen van de afbeelding mislukt, stop en geen een foutmelding.
                 die('Afbeelding uploaden mislukt.');
             }
 
-            // Sla alleen de bestandsnaam op, NIET het volledige pad (bijv. "gerecht_abc123.png")
-            // Het volledige pad wordt nergens anders in de code gebruikt
+            // Sla alleen de bestandsnaam op niet het volledige pad, omdat de image in de img map staat.
             $imagePath = $fileName;
         }
 
-        // ===== Nieuw gerecht invoegen in de database =====
-
-        // Bereid de SQL query voor met placeholders om SQL injectie te voorkomen
-        // pborange, pbgreen en pbred worden altijd op 0 gezet (geen labels standaard)
+        // ===== Het nieuwe gerecht invoegen in de database =====
+        // SQL query is voorbereid met placeholders om SQL injectie te voorkomen.
         $stmt = $pdo->prepare("
             INSERT INTO gerechten (Titel, Beschrijving, Prijs, Type, Image, pborange, pbgreen, pbred)
             VALUES (:titel, :beschrijving, :prijs, :type, :image, 0, 0, 0)
         ");
 
-        // Koppel de formulierwaarden aan de placeholders en voer de query uit
+        // Link de formulierwaarden aan de placeholders en voer de query uit.
         $stmt->execute([
             ':titel'        => $titel,
             ':beschrijving' => $beschrijving,
@@ -99,8 +93,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="t-prijs">Prijs (€)</label>
-                    <input type="number" id="t-prijs" name="prijs" placeholder="bijv. 13.50" step="0.01" min="0"
-                        required>
+                    <input type="number" id="t-prijs" name="prijs" placeholder="bijv. 13.50" step="0.01" min="0" required>
                 </div>
                 <div class="form-group">
                     <label for="t-afbeelding">Afbeelding</label>
@@ -120,43 +113,47 @@
 
 
 
-    <!-- ── TAB 2: AANPASSEN ──────────────────────────────────── -->
+    <!-- ──────────────────────────────────── AANPASSEN ──────────────────────────────────── -->
 
     <?php
     // ===== Gerecht aanpassen =====
+    // Als er een POST request is en de actie is aanpassen voer dan de code uit om het gerecht aan te passen.
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['actie']) && $_POST['actie'] === 'aanpassen') {
 
-        $id           = intval($_POST['id']);
-        $titel        = trim($_POST['naam']);
+        $id           = intval($_POST['id']);   // ID is altijd een getal.
+        $titel        = trim($_POST['naam']);   // Zorgt dat er geen onnodige spaties voor of achter de naam staan.
         $beschrijving = trim($_POST['beschrijving']);
-        $prijs        = floatval($_POST['prijs']);
+        $prijs        = floatval($_POST['prijs']);  // Zorgt dat prijs altijd een getal is.
         $type         = trim($_POST['categorie']);
-        $pborange     = isset($_POST['badge_orange']) ? 1 : 0;
+        $pborange     = isset($_POST['badge_orange']) ? 1 : 0;  // Als de checkbox is aangevinkt dan krijgt de boolean de waarde 1 voor true ander niet.
         $pbgreen      = isset($_POST['badge_green'])  ? 1 : 0;
         $pbred        = isset($_POST['badge_red'])    ? 1 : 0;
 
         // ===== Afbeelding uploaden als er een nieuwe is meegegeven =====
-        $imagePath = trim($_POST['huidige_afbeelding']); // Houd de huidige afbeelding als standaard
+        $imagePath = trim($_POST['huidige_afbeelding']); // Houd de huidige afbeelding als standaard.
 
+        // Als er een nieuwe image is meegegeven, verwerk deze dan.
         if (isset($_FILES['afbeelding']) && $_FILES['afbeelding']['error'] === UPLOAD_ERR_OK) {
 
-            $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/img/';
+            $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/img/';   // Pad naar de img map.
 
-            if (!is_dir($uploadDir)) {
+            if (!is_dir($uploadDir)) {  // Als de img map nog niet bestaat maak deze dan.
                 mkdir($uploadDir, 0755, true);
             }
 
+            // Haal de bestandsextensie op uit de bestandsnaam.
             $extension = strtolower(pathinfo($_FILES['afbeelding']['name'], PATHINFO_EXTENSION));
             $fileName   = uniqid('gerecht_', true) . '.' . $extension;
-            $targetPath = $uploadDir . $fileName;
+            $targetPath = $uploadDir . $fileName;   // Genereer een unieke bestandsnaam.
 
-            $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif']; // Controleer de bestandsextensie om te zorgen dat het een afbeelding is.
 
-            if (!in_array($extension, $allowedExtensions)) {
+            if (!in_array($extension, $allowedExtensions)) {    // Als het geen bestand is die mag, dan stop het proces en geef een foutmelding.
                 die('Ongeldig afbeeldingsformaat. Alleen JPG, PNG, WEBP en GIF zijn toegestaan.');
             }
 
-            if (!move_uploaded_file($_FILES['afbeelding']['tmp_name'], $targetPath)) {
+            // Verplaats het geüploade bestand van de tijdelijke map naar de img map.
+            if (!move_uploaded_file($_FILES['afbeelding']['tmp_name'], $targetPath)) {  // Als het verplaatsen van de afbeelding mislukt stop en geen een foutmelding.
                 die('Afbeelding uploaden mislukt.');
             }
 
@@ -169,8 +166,9 @@
             SET Titel = :titel, Beschrijving = :beschrijving, Prijs = :prijs, Type = :type, Image = :image, pborange = :pborange, pbgreen = :pbgreen, pbred = :pbred
             WHERE id = :id
         ");
+        // update gerecht waarden waar het ID hetzelfde is als het gerecht dat gekozen is.
 
-        $stmt->execute([
+        $stmt->execute([    // Link de formulierwaarden aan de placeholders en voer de query uit.
             ':titel'        => $titel,
             ':beschrijving' => $beschrijving,
             ':prijs'        => $prijs,
@@ -182,7 +180,7 @@
             ':id'           => $id
         ]);
 
-        header('Location: admin.php');
+        header('Location: admin.php');  // Ga naar dezelfde pagina om te voorkomen dat de form 2x word uitgevoert.
         exit();
     }
     ?>
@@ -224,7 +222,7 @@
                     </td>
                     <td><?php echo $gerecht['type']; ?></td>
                     <td class='tabel-prijs'>€<?php echo $gerecht['prijs']; ?></td>
-                    <td><a href='#edit-<?php echo $gerecht['id']; ?>' class='btn-edit'>Bewerken</a></td>
+                    <td><a href='#edit-<?php echo $gerecht['id']; ?>' class='btn-edit'>Bewerken</a></td>    <!-- Link naar de aanpassen form -->
                 </tr>
 
                 <tr class="edit-form-row" id="edit-<?php echo $gerecht['id']; ?>">
@@ -298,7 +296,7 @@
 
 
 
-    <!-- ── TAB 3: VERWIJDEREN ────────────────────────────────── -->
+    <!-- ──────────────────────────────────── VERWIJDEREN ────────────────────────────────── -->
     <div class="tab-content" id="content-verwijderen">
 
         <div class="delete-warning">⚠️ Verwijderen kan niet ongedaan worden gemaakt. Weet u het zeker?</div>
@@ -309,7 +307,7 @@
         
         //  Show alle gerechten tenzij hij leeg is.
         //  Define SQL statement
-        $sql = "SELECT * FROM gerechten";
+        $sql = "SELECT * FROM gerechten";   // Laat alle gerechten zien.
 
         //  Prepare SQL statement
         $statement = $pdo->prepare($sql);
@@ -324,11 +322,12 @@
         <?php
         
         // ===== Gerecht verwijderen =====
+        // Als er een POST request is en er is een ID meegegeven voer dan de code uit om het gerecht te verwijderen.
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
 
-            $id = intval($_POST['id']); // intval zorgt dat het altijd een getal is, geen kwaadaardige invoer
+            $id = intval($_POST['id']); // Intval zorgt dat het altijd een getal is.
 
-            $stmt = $pdo->prepare("DELETE FROM gerechten WHERE id = :id");
+            $stmt = $pdo->prepare("DELETE FROM gerechten WHERE id = :id");  // Delete gerecht waar het ID hetzelfde is als het gerecht dat gekozen is.
             $stmt->execute([':id' => $id]);
         }
         

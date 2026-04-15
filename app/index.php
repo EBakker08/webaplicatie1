@@ -76,7 +76,7 @@ include_once 'includes/database.php'; // Include connectie naar database
     <div class="search-wrap">
       <?php
       
-      include_once 'includes/searchbar.php';
+      include_once 'includes/searchbar.php';  // Include naar zoekbalk.
 
       ?>
     </div>
@@ -84,13 +84,13 @@ include_once 'includes/database.php'; // Include connectie naar database
   </nav>
 
   <?php
-
+  // Als er een gerecht is gezocht laat dan dit zien.
   if (!empty($zoekopdracht)) {
     echo "<style>.menu-section { display: none; }</style>";
     echo "<div class='search-results'>";
-    if (empty($menuItems)) {
-      echo "<p>Geen resultaten voor " . htmlspecialchars($zoekopdracht) . "</p>";
-    } else {
+    if (empty($menuItems)) {  // Als er geen resultaten zijn gevonder.
+      echo '<p>Geen resultaten voor "' . htmlspecialchars($zoekopdracht) . '"</p>';
+    } else {  // Anders laat de resultaten zien.
       echo "<div class='product-grid'>";
       foreach ($menuItems as $item) {
         echo "<div class='product-grid'>";
@@ -121,7 +121,7 @@ include_once 'includes/database.php'; // Include connectie naar database
 
     <section class="menu-section" aria-label="Menu">
 
-      <!-- ── BURGERS ─────────────────────────────────────────── -->
+      <!-- ───────────────────────────────────────────── BURGERS ───────────────────────────────────────────── -->
       <div class="category-block">
 
         <?php
@@ -178,7 +178,7 @@ include_once 'includes/database.php'; // Include connectie naar database
         </div>
       </div>
 
-      <!-- ── LOADED FRIES ─────────────────────────────────────── -->
+      <!-- ───────────────────────────────────────────── LOADED FRIES ───────────────────────────────────────────── -->
       <div class="category-block">
         
         <?php
@@ -235,7 +235,7 @@ include_once 'includes/database.php'; // Include connectie naar database
         </div>
       </div>
 
-      <!-- ── KEBAB & SHOARMA ──────────────────────────────────── -->
+      <!-- ───────────────────────────────────────────── KEBAB & SHOARMA ───────────────────────────────────────────── -->
       <div class="category-block">
 
         <?php
@@ -292,7 +292,7 @@ include_once 'includes/database.php'; // Include connectie naar database
         </div>
       </div>
 
-      <!-- ── KAPSALON ─────────────────────────────────────────── -->
+      <!-- ───────────────────────────────────────────── KAPSALON ───────────────────────────────────────────── -->
       <div class="category-block">
 
         <?php
@@ -349,7 +349,7 @@ include_once 'includes/database.php'; // Include connectie naar database
         </div>
       </div>
 
-      <!-- ── DURUM ────────────────────────────────────────────── -->
+      <!-- ───────────────────────────────────────────── DURUM ───────────────────────────────────────────── -->
       <div class="category-block">
 
         <?php
@@ -406,7 +406,7 @@ include_once 'includes/database.php'; // Include connectie naar database
         </div>
       </div>
 
-      <!-- ── SNACKS ───────────────────────────────────────────── -->
+      <!-- ───────────────────────────────────────────── SNACKS ───────────────────────────────────────────── -->
       <div class="category-block">
         
         <?php
@@ -463,7 +463,7 @@ include_once 'includes/database.php'; // Include connectie naar database
         </div>
       </div>
 
-      <!-- ── DRANKEN ──────────────────────────────────────────── -->
+      <!-- ───────────────────────────────────────────── DRANKEN ───────────────────────────────────────────── -->
       <div class="category-block">
         
         <?php
