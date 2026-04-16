@@ -1,7 +1,9 @@
 <div class="tab-panels">
 
     <!-- ──────────────────────────────────── TOEVOEGEN ──────────────────────────────────── -->
+
     <?php
+
     // Als er een POST request is en de actie is toevoegen, voer dan de code uit om een nieuw gerecht toe te voegen.
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['actie']) && $_POST['actie'] === 'toevoegen') {
 
@@ -12,7 +14,7 @@
         $type         = trim($_POST['categorie']);
         $imagePath    = ''; // Leeg voor als er geen image word geupload.
 
-        // ====== Afbeelding uploaden =====
+        // =========================================== Afbeelding uploaden ===========================================
         if (isset($_FILES['afbeelding']) && $_FILES['afbeelding']['error'] === UPLOAD_ERR_OK) { // Als er een afbeelding is geüpload verwerk deze dan.
 
             $uploadDir = $_SERVER['DOCUMENT_ROOT'] . '/img/'; // Pad naar de img map.
@@ -41,7 +43,7 @@
             $imagePath = $fileName;
         }
 
-        // ===== Het nieuwe gerecht invoegen in de database =====
+        // =========================================== Het nieuwe gerecht invoegen in de database ===========================================
         // SQL query is voorbereid met placeholders om SQL injectie te voorkomen.
         $stmt = $pdo->prepare("
             INSERT INTO gerechten (Titel, Beschrijving, Prijs, Type, Image, pborange, pbgreen, pbred)
@@ -57,6 +59,7 @@
             ':image'        => $imagePath
         ]);
     }
+    
     ?>
 
     <div class="tab-content" id="content-toevoegen">
@@ -116,7 +119,7 @@
     <!-- ──────────────────────────────────── AANPASSEN ──────────────────────────────────── -->
 
     <?php
-    // ===== Gerecht aanpassen =====
+
     // Als er een POST request is en de actie is aanpassen voer dan de code uit om het gerecht aan te passen.
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['actie']) && $_POST['actie'] === 'aanpassen') {
 
@@ -129,7 +132,7 @@
         $pbgreen      = isset($_POST['badge_green'])  ? 1 : 0;
         $pbred        = isset($_POST['badge_red'])    ? 1 : 0;
 
-        // ===== Afbeelding uploaden als er een nieuwe is meegegeven =====
+        // =========================================== Afbeelding uploaden als er een nieuwe is meegegeven =====
         $imagePath = trim($_POST['huidige_afbeelding']); // Houd de huidige afbeelding als standaard.
 
         // Als er een nieuwe image is meegegeven, verwerk deze dan.
@@ -183,6 +186,7 @@
         header('Location: admin.php');  // Ga naar dezelfde pagina om te voorkomen dat de form 2x word uitgevoert.
         exit();
     }
+
     ?>
 
     <div class="tab-content" id="content-aanpassen">
@@ -321,7 +325,6 @@
 
         <?php
         
-        // ===== Gerecht verwijderen =====
         // Als er een POST request is en er is een ID meegegeven voer dan de code uit om het gerecht te verwijderen.
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
 

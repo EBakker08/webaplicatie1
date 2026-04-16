@@ -1,4 +1,13 @@
-<?php session_start();  // Start session ?>
+<?php
+
+session_start();  // Start session
+
+if (!isset($_SESSION['gebruiker_id'])) {  // als gebruikers naam geen waarde heeft of niet is ingesteld betekent dat je niet ingelogd bent dus ga terug naar loginpagina
+  header('Location: http://localhost:8000/inlog.php');  // hier word je terug gestuurd naar login pagina
+  exit(); // kap de code af voor onnodige bugs
+}
+
+?>
 
 <?php
 
